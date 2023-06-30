@@ -6,8 +6,9 @@ export default defineConfig({
     polyfillDynamicImport: false,
     outDir: 'dist',
     lib: {
+      name: 'react-components',
       entry: 'src/index.tsx',
-      formats: ['es', 'cjs'],
+      formats: ['es', 'cjs', 'umd'],
     },
     rollupOptions: {
       external: /^react/,
