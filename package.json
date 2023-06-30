@@ -2,18 +2,8 @@
   "name": "thq-react-components",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/thq-react-components.js",
   "type": "module",
-  "exports": {
-    "./DangerousHTML": {
-      "import": "./dist/DangerousHTML.es.js",
-      "require": "./dist/DangerousHTML.cjs.js"
-    },
-    "./DateTimePrimitive": {
-      "import": "./dist/DateTimePrimitive.es.js",
-      "require": "./dist/DateTimePrimitive.cjs.js"
-    }
-  },
   "scripts": {
     "build": "vite build",
     "test": "vitest run"
