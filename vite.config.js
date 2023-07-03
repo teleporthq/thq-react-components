@@ -11,7 +11,12 @@ export default defineConfig({
       formats: ['es', 'cjs', 'umd'],
     },
     rollupOptions: {
-      external: /^react/,
+      external: ['react'],
+      output: {
+        globals: {
+          react: 'React',
+        },
+      },
     },
   },
   test: {
