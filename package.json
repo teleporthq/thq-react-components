@@ -4,6 +4,20 @@
   "description": "",
   "main": "dist/thq-react-components.js",
   "type": "module",
+  "exports": {
+    "." : {
+      "import": "./dist/thq-react-components.js",
+      "require": "./dist/thq-react-components.cjs.js"
+    },
+    "./cjs": {
+      "import": "./dist/thq-react-components.cjs.js",
+      "require": "./dist/thq-react-components.cjs.js"
+    },
+    "./umd": {
+      "import": "./dist/thq-react-components.umd.js",
+      "require": "./dist/thq-react-components.umd.js"
+    }
+  },
   "scripts": {
     "build": "vite build",
     "test": "vitest run"
