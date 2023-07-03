@@ -1,5 +1,5 @@
 {
-  "name": "thq-react-components",
+  "name": "@teleporthq/thq-react-components",
   "version": "1.0.0",
   "description": "",
   "main": "dist/thq-react-components.js",
@@ -39,14 +39,14 @@
   "homepage": "https://github.com/teleporthq/thq-react-components#readme",
   "dependencies": {
     "dayjs": "^1.11.8",
-    "react": "^18.2.0"
+    "react": "^17.0.2"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.2.14",
     "husky": "^8.0.3",
     "jsdom": "^22.1.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^17.0.2",
     "vite": "^4.3.9",
     "pretty-quick": "^3.1.3",
     "vitest": "^0.32.2"
