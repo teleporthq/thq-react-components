@@ -1,6 +1,8 @@
-import { describe, expect, test } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, expect, test, afterEach } from 'vitest'
+import { render, screen, cleanup } from '@testing-library/react'
 import DateTimePrimitive from '.'
+
+afterEach(() => cleanup())
 
 describe('Date-Time Primitive test', () => {
   test('Should render date-time primitive', () => {
