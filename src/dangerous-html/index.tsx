@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 
 const DangerousHTML = ({ html }) => {
   const ref = useRef(null);

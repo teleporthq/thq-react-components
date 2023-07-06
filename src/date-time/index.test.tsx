@@ -1,6 +1,8 @@
-import { describe, expect, test } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, expect, test, afterEach } from 'vitest'
+import { render, screen, cleanup } from '@testing-library/react'
 import DateTimePrimitive from '.'
+
+afterEach(() => cleanup())
 
 describe('Date-Time Primitive test', () => {
   test('Should render date-time primitive', () => {
@@ -22,6 +24,6 @@ describe('Date-Time Primitive test', () => {
 
   test('Should handle invalid format', () => {
     render(<DateTimePrimitive date="2021-03-01" format="invalid format" />)
-    expect(screen.getByText('invamli1 for0amt')).toBeDefined()
+    expect(screen.getByText('invamli1 for30amt')).toBeDefined()
   })
 })

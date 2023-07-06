@@ -4,7 +4,7 @@ type Status = 'idle' | 'loading' | 'success' | 'error';
 
 interface DataProviderProps<T, P> {
   fetchData: (params: P) => Promise<T>;
-  params: P;
+  params?: P;
   initialData?: T;
   persistDataDuringLoading?: boolean;
   renderLoading?: () => JSX.Element;
@@ -58,7 +58,7 @@ const DataProvider = <T, P>(props: DataProviderProps<T, P>) => {
   switch (status) {
     case 'idle':
     case 'loading':
-      return (props.persistDataDuringLoading && data) ? renderSuccess(data, true) : renderLoading();
+      return (props.persistDataDuringLoading && data) ? renderSuccess(data, true) : renderLoading ? renderLoading() : null;
     case 'success':
       return renderSuccess(data, false);
     case 'error':

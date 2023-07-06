@@ -1,6 +1,11 @@
 import DataProvider from './';
-import { render, screen, waitFor } from '@testing-library/react';
-import { describe, it, expect } from 'vitest'
+import { render, screen, waitFor, cleanup } from '@testing-library/react';
+import { describe, it, expect, afterEach } from 'vitest'
+import '@testing-library/jest-dom'
+
+afterEach(() => {
+  cleanup()
+})
 
 describe('DataProvider', () => {
   it('shows loading state', async () => {
@@ -113,4 +118,19 @@ describe('DataProvider', () => {
     })
 
   });
+
+  it('should render, even when renderLoading and renderError states are missing', async () => {
+    const fetchData = async () => 'mock data'
+
+    render(
+      <DataProvider
+        fetchData={fetchData}
+        renderSuccess={(data) => <div>{data}</div>}
+      />
+    )
+
+    await waitFor( () => {
+      expect(screen.getByText('mock data')).toBeInTheDocument();
+    })
+  })
 });
