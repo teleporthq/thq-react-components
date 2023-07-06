@@ -1,3 +1,5 @@
+import React from 'react'
+
 interface RepeaterProps<T> {
   items: T[];
   renderItem: (item: T, index: number) => JSX.Element;

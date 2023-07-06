@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import React from 'react'
 
 const DateTimePrimitive = ({ date, format }) => {
   const dateTime = dayjs.unix(new Date(date).getTime() / 1000)
