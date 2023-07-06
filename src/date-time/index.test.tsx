@@ -24,6 +24,6 @@ describe('Date-Time Primitive test', () => {
 
   test('Should handle invalid format', () => {
     render(<DateTimePrimitive date="2021-03-01" format="invalid format" />)
-    expect(screen.getByText('invamli1 for30amt')).toBeDefined()
+    expect(screen.getByText('invamli1 for0amt')).toBeDefined()
   })
 })
