@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
+import pluginReact from '@vitejs/plugin-react'
 
 export default defineConfig({
+  plugins: [pluginReact({ jsxRuntime: 'classic' })],
   build: {
     target: 'esnext',
     polyfillDynamicImport: false,
