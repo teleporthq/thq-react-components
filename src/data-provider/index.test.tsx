@@ -120,11 +120,11 @@ describe('DataProvider', () => {
   });
 
   it('should render, even when renderLoading and renderError states are missing', async () => {
-    const fetchData = async () => 'mock data'
 
     render(
       <DataProvider
-        fetchData={fetchData}
+        initialData={"mock data"}
+        persistDataDuringLoading={true}
         renderSuccess={(data) => <div>{data}</div>}
       />
     )

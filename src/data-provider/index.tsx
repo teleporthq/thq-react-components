@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
 interface DataProviderProps<T, P> {
-  fetchData: (params: P) => Promise<T>;
+  fetchData?: (params: P) => Promise<T>;
   params?: P;
   initialData?: T;
   persistDataDuringLoading?: boolean;
