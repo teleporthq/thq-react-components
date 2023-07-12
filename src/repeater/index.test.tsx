@@ -65,7 +65,7 @@ describe('Repeater', () => {
     }
 
     render(<Repeater items={params} renderItem={(item) => <div>{item.name}
-      <span>total pages: {item.pagination.total}</span>
+      <span>total pages: {item.teleportMeta.pagination.total}</span>
       </div>}  />)
     console.log(document.body.innerHTML)
   })

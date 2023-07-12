@@ -7,7 +7,7 @@ interface RepeaterBasic<T> {
 }
 
 interface RepeaterMetaProps<T, K> {
-  items: { data: T[]; meta: K };
+  items: { data: T[]; teleportMeta: K };
   renderItem: (item: T & Partial<K>, index: number) => JSX.Element;
   renderEmpty?: () => JSX.Element;
 }
@@ -25,10 +25,14 @@ const Repeater = <T extends unknown, K extends Record<string, unknown>>(
     return (
       <>
         {data.map((item, index) =>
-          typeof item === 'object' ? renderItem({ ...item, ...meta }, index) : renderItem(item as T & Partial<K>, index)
+          typeof item === 'object' ? renderItem({ ...item, teleportMeta: meta }, index) : renderItem(item as T & Partial<K>, index)
         )}
       </>
     );
+  }
+
+  if (!Array.isArray(items)) {
+    return
   }
 
   if (items.length === 0) {
