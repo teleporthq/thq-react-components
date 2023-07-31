@@ -15,17 +15,15 @@ const Asset = ({ src, description }) => {
   )
 }
 
-export const DocumentLink = ({ connections, node, children }) => {
+export const DocumentLink = ({ node, children }) => {
+  if (node.attrs.src) {
+    return <Asset {...node.attrs} />
+  }
+
   return (
     <>
-      {connections?.map(
-        (connection) =>
-        connection?.__typename == "Asset" &&
-          node?.attrs?.documentId == connection.id && <Asset key={connection.id} {...connection} />,
-      )}
       {children}
     </>
   )
 }
 
-export default DocumentLink
