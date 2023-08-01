@@ -15,7 +15,7 @@ const Asset = ({ src, description }) => {
   )
 }
 
-export const DocumentLink = ({ node, children }) => {
+const CaisyDocumentLink = ({ node, children }) => {
   if (node.attrs.src) {
     return <Asset {...node.attrs} />
   }
@@ -26,4 +26,7 @@ export const DocumentLink = ({ node, children }) => {
     </>
   )
 }
+
+export default CaisyDocumentLink
+
 
