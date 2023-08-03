@@ -1,65 +1,74 @@
 import y from "dayjs";
-import s, { useRef as f, useEffect as E, useState as m } from "react";
-const T = ({ date: t, format: e }) => {
-  const r = y.unix(new Date(t).getTime() / 1e3), a = y(r).format(e);
-  return /* @__PURE__ */ s.createElement(s.Fragment, null, a);
-}, w = ({ html: t }) => {
-  const e = f(null);
+import r, { useRef as f, useEffect as E, useState as d } from "react";
+const S = ({ date: e, format: t }) => {
+  const n = y.unix(new Date(e).getTime() / 1e3), a = y(n).format(t);
+  return /* @__PURE__ */ r.createElement(r.Fragment, null, a);
+}, T = ({ html: e }) => {
+  const t = f(null);
   return E(() => {
-    if (!t || !e.current)
+    if (!e || !t.current)
       return;
-    const r = document.createRange().createContextualFragment(t);
-    e.current.append(r);
-  }, []), /* @__PURE__ */ s.createElement("div", { style: { display: "contents" }, ref: e });
-}, H = (t) => {
+    const n = document.createRange().createContextualFragment(e);
+    t.current.append(n);
+  }, []), /* @__PURE__ */ r.createElement("div", { style: { display: "contents" }, ref: t });
+}, $ = (e) => {
   const {
-    fetchData: e,
-    params: r,
+    fetchData: t,
+    params: n,
     initialData: a,
-    persistDataDuringLoading: n = !1,
+    persistDataDuringLoading: s = !1,
     renderLoading: c,
     renderSuccess: u,
-    renderError: i
-  } = t, [h, o] = m("idle"), [l, g] = m(a), [v, F] = m(null), D = f(t.initialData !== void 0), p = f(n);
-  switch (p.current = n, E(() => {
+    renderError: l
+  } = e, [h, i] = d("idle"), [o, g] = d(a), [w, F] = d(null), D = f(e.initialData !== void 0), p = f(s);
+  switch (p.current = s, E(() => {
     if (D.current) {
       D.current = !1;
       return;
     }
     (async () => {
-      o("loading"), p.current || g(void 0);
+      i("loading"), p.current || g(void 0);
       try {
-        const d = await e(r);
-        g(d), o("success");
-      } catch (d) {
-        F(d), o("error");
+        const m = await t(n);
+        g(m), i("success");
+      } catch (m) {
+        F(m), i("error");
       }
     })();
-  }, [r, e]), h) {
+  }, [n, t]), h) {
     case "idle":
     case "loading":
-      return t.persistDataDuringLoading && l ? u(l, !0) : c ? c() : null;
+      return e.persistDataDuringLoading && o ? u(o, !0) : c ? c() : null;
     case "success":
-      return u(l, !1);
+      return u(o, !1);
     case "error":
-      return i(v);
+      return l(w);
     default:
       return null;
   }
-}, S = (t) => {
-  const { items: e, renderItem: r, renderEmpty: a } = t;
-  if ("data" in e && "meta" in e) {
-    const { data: n, meta: c } = e;
-    return n.length === 0 ? a ? a() : null : /* @__PURE__ */ s.createElement(s.Fragment, null, n.map(
-      (u, i) => r(typeof u == "object" ? { ...u, teleportMeta: c } : u, i)
+}, H = (e) => {
+  const { items: t, renderItem: n, renderEmpty: a } = e;
+  if ("data" in t && "meta" in t) {
+    const { data: s, meta: c } = t;
+    return s.length === 0 ? a ? a() : null : /* @__PURE__ */ r.createElement(r.Fragment, null, s.map(
+      (u, l) => n(typeof u == "object" ? { ...u, teleportMeta: c } : u, l)
     ));
   }
-  if (Array.isArray(e))
-    return e.length === 0 ? a ? a() : null : /* @__PURE__ */ s.createElement(s.Fragment, null, e.map((n, c) => r(n, c)));
-};
+  if (Array.isArray(t))
+    return t.length === 0 ? a ? a() : null : /* @__PURE__ */ r.createElement(r.Fragment, null, t.map((s, c) => n(s, c)));
+}, v = ({ src: e, description: t }) => /* @__PURE__ */ r.createElement(r.Fragment, null, e && /* @__PURE__ */ r.createElement(
+  "img",
+  {
+    loading: "lazy",
+    src: `${e}?w=1920&h=960`,
+    srcSet: `${e}?w=3840&h=1920 1920w, ${e}?w=1920&h=960 1280w, ${e}?w=1280&h=640 640w`,
+    alt: t ?? ""
+  }
+)), j = ({ node: e, children: t }) => e.attrs.src ? /* @__PURE__ */ r.createElement(v, { ...e.attrs }) : /* @__PURE__ */ r.createElement(r.Fragment, null, t);
 export {
-  w as DangerousHTML,
-  H as DataProvider,
-  T as DateTimePrimitive,
-  S as Repeater
+  j as CaisyDocumentLink,
+  T as DangerousHTML,
+  $ as DataProvider,
+  S as DateTimePrimitive,
+  H as Repeater
 };
