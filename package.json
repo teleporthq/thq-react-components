@@ -6,9 +6,8 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/thq-react-components.js",
-      "require": "./dist/thq-react-components.cjs.js",
-      "umd": "./dist/thq-react-components.umd.cjs"
+      "import": "./dist/react-components.js",
+      "require": "./dist/react-components.cjs"
     }
   },
   "scripts": {
