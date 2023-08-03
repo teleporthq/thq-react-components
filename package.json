@@ -1,8 +1,8 @@
 {
-  "name": "@teleporthq/thq-react-components",
+  "name": "@teleporthq/react-components",
   "version": "1.0.1",
   "description": "",
-  "main": "dist/components.js",
+  "main": "dist/react-components.js",
   "type": "module",
   "exports": {
     ".": {
