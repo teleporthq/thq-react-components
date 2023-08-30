@@ -1,14 +1,13 @@
 {
-  "name": "@teleporthq/thq-react-components",
+  "name": "@teleporthq/react-components",
   "version": "1.0.1",
   "description": "",
-  "main": "dist/components.js",
+  "main": "dist/react-components.js",
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/thq-react-components.js",
-      "require": "./dist/thq-react-components.cjs.js",
-      "umd": "./dist/thq-react-components.umd.cjs"
+      "import": "./dist/react-components.js",
+      "require": "./dist/react-components.cjs"
     }
   },
   "scripts": {
@@ -37,6 +36,9 @@
   },
   "dependencies": {
     "dayjs": "^1.11.8"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
