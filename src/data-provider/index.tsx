@@ -57,6 +57,7 @@ const DataProvider = <T, P>(props: DataProviderProps<T, P>) => {
     fetchDataAsync();
   }, [params, fetchData]);
 
+  return null;
   switch (status) {
     case "idle":
     case "loading":
