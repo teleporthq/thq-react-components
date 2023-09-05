@@ -18,9 +18,9 @@ const DataProvider = <T, P>(props: DataProviderProps<T, P>) => {
     params,
     initialData,
     persistDataDuringLoading = false,
-    renderLoading,
+    renderLoading = () => null,
     renderSuccess,
-    renderError,
+    renderError = () => null,
   } = props;
 
   const [status, setStatus] = useState<Status>("idle");
@@ -62,13 +62,11 @@ const DataProvider = <T, P>(props: DataProviderProps<T, P>) => {
     case "loading":
       return props.persistDataDuringLoading && data
         ? renderSuccess(data, true)
-        : renderLoading
-        ? renderLoading()
-        : null;
+        : renderLoading();
     case "success":
       return renderSuccess(data, false);
     case "error":
-      return renderError ? renderError(error!) : null;
+      return renderError(error!);
     default:
       return null;
   }
