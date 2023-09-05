@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
-type Status = 'idle' | 'loading' | 'success' | 'error';
+type Status = "idle" | "loading" | "success" | "error";
 
 interface DataProviderProps<T, P> {
   fetchData?: (params: P) => Promise<T>;
@@ -13,42 +13,44 @@ interface DataProviderProps<T, P> {
 }
 
 const DataProvider = <T, P>(props: DataProviderProps<T, P>) => {
-   const {
+  const {
     fetchData,
     params,
     initialData,
     persistDataDuringLoading = false,
     renderLoading,
     renderSuccess,
-    renderError
-    } = props;
+    renderError,
+  } = props;
 
-  const [status, setStatus] = useState<Status>('idle');
+  const [status, setStatus] = useState<Status>("idle");
   const [data, setData] = useState<any>(initialData);
   const [error, setError] = useState<Error | null>(null);
-  const passFetchBecauseWeHaveInitialData = useRef(props.initialData !== undefined)
+  const passFetchBecauseWeHaveInitialData = useRef(
+    props.initialData !== undefined
+  );
 
-  const persistDataDuringLoadingRef = useRef(persistDataDuringLoading)
-  persistDataDuringLoadingRef.current = persistDataDuringLoading
+  const persistDataDuringLoadingRef = useRef(persistDataDuringLoading);
+  persistDataDuringLoadingRef.current = persistDataDuringLoading;
 
   useEffect(() => {
-    if ( passFetchBecauseWeHaveInitialData.current ) {
-        passFetchBecauseWeHaveInitialData.current = false
-        return
+    if (passFetchBecauseWeHaveInitialData.current) {
+      passFetchBecauseWeHaveInitialData.current = false;
+      return;
     }
 
     const fetchDataAsync = async () => {
-      setStatus('loading');
-      if ( !persistDataDuringLoadingRef.current ) {
-        setData(undefined)
+      setStatus("loading");
+      if (!persistDataDuringLoadingRef.current) {
+        setData(undefined);
       }
       try {
         const result = await fetchData(params);
         setData(result);
-        setStatus('success');
+        setStatus("success");
       } catch (err) {
         setError(err as Error);
-        setStatus('error');
+        setStatus("error");
       }
     };
 
@@ -56,16 +58,20 @@ const DataProvider = <T, P>(props: DataProviderProps<T, P>) => {
   }, [params, fetchData]);
 
   switch (status) {
-    case 'idle':
-    case 'loading':
-      return (props.persistDataDuringLoading && data) ? renderSuccess(data, true) : renderLoading ? renderLoading() : null;
-    case 'success':
+    case "idle":
+    case "loading":
+      return props.persistDataDuringLoading && data
+        ? renderSuccess(data, true)
+        : renderLoading
+        ? renderLoading()
+        : null;
+    case "success":
       return renderSuccess(data, false);
-    case 'error':
-      return renderError(error!);
+    case "error":
+      return renderError ? renderError(error!) : null;
     default:
       return null;
   }
 };
 
-export default DataProvider
+export default DataProvider;

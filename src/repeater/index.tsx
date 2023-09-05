@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface RepeaterBasic<T> {
   items: T[];
@@ -17,7 +17,7 @@ const Repeater = <T extends unknown, K extends Record<string, unknown>>(
 ) => {
   const { items, renderItem, renderEmpty } = props;
 
-  if ('data' in items && 'meta' in items) {
+  if ("data" in items && "meta" in items) {
     const { data, meta } = items;
     if (data.length === 0) {
       return renderEmpty ? renderEmpty() : null;
@@ -25,14 +25,16 @@ const Repeater = <T extends unknown, K extends Record<string, unknown>>(
     return (
       <>
         {data.map((item, index) =>
-          typeof item === 'object' ? renderItem({ ...item, teleportMeta: meta }, index) : renderItem(item as T & Partial<K>, index)
+          typeof item === "object"
+            ? renderItem({ ...item, teleportMeta: meta }, index)
+            : renderItem(item as T & Partial<K>, index)
         )}
       </>
     );
   }
 
   if (!Array.isArray(items)) {
-    return
+    return null;
   }
 
   if (items.length === 0) {
@@ -40,9 +42,7 @@ const Repeater = <T extends unknown, K extends Record<string, unknown>>(
   }
 
   return (
-    <>
-      {(items as T[]).map((item, index) => renderItem(item, index))}
-    </>
+    <>{items.map((item, index) => renderItem(item as T & Partial<K>, index))}</>
   );
 };
 

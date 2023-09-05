@@ -18,9 +18,11 @@ const w = ({ date: t, format: e }) => {
     initialData: a,
     persistDataDuringLoading: s = !1,
     renderLoading: c,
-    renderSuccess: u,
-    renderError: l
-  } = t, [h, i] = d("idle"), [o, g] = d(a), [F, v] = d(null), D = f(t.initialData !== void 0), p = f(s);
+    renderSuccess: l,
+    renderError: u
+  } = t, [h, i] = d("idle"), [o, g] = d(a), [F, v] = d(null), D = f(
+    t.initialData !== void 0
+  ), p = f(s);
   switch (p.current = s, E(() => {
     if (D.current) {
       D.current = !1;
@@ -38,11 +40,11 @@ const w = ({ date: t, format: e }) => {
   }, [n, e]), h) {
     case "idle":
     case "loading":
-      return t.persistDataDuringLoading && o ? u(o, !0) : c ? c() : null;
+      return t.persistDataDuringLoading && o ? l(o, !0) : c ? c() : null;
     case "success":
-      return u(o, !1);
+      return l(o, !1);
     case "error":
-      return l(F);
+      return u ? u(F) : null;
     default:
       return null;
   }
@@ -51,11 +53,10 @@ const w = ({ date: t, format: e }) => {
   if ("data" in e && "meta" in e) {
     const { data: s, meta: c } = e;
     return s.length === 0 ? a ? a() : null : /* @__PURE__ */ r.createElement(r.Fragment, null, s.map(
-      (u, l) => n(typeof u == "object" ? { ...u, teleportMeta: c } : u, l)
+      (l, u) => n(typeof l == "object" ? { ...l, teleportMeta: c } : l, u)
     ));
   }
-  if (Array.isArray(e))
-    return e.length === 0 ? a ? a() : null : /* @__PURE__ */ r.createElement(r.Fragment, null, e.map((s, c) => n(s, c)));
+  return Array.isArray(e) ? e.length === 0 ? a ? a() : null : /* @__PURE__ */ r.createElement(r.Fragment, null, e.map((s, c) => n(s, c))) : null;
 }, L = ({ src: t, description: e }) => /* @__PURE__ */ r.createElement(r.Fragment, null, t && /* @__PURE__ */ r.createElement(
   "img",
   {
