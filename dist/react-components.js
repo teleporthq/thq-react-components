@@ -1,64 +1,74 @@
-import p from "dayjs";
-import r, { useRef as f, useEffect as y, useState as m } from "react";
-const H = ({ date: e, format: t }) => {
-  const n = p.unix(new Date(e).getTime() / 1e3), a = p(n).format(t);
+import y from "dayjs";
+import r, { useRef as f, useEffect as E, useState as d } from "react";
+const w = ({ date: t, format: e }) => {
+  const n = y.unix(new Date(t).getTime() / 1e3), a = y(n).format(e);
   return /* @__PURE__ */ r.createElement(r.Fragment, null, a);
-}, S = ({ html: e }) => {
-  const t = f(null);
-  return y(() => {
-    if (!e || !t.current)
+}, H = ({ html: t }) => {
+  const e = f(null);
+  return E(() => {
+    if (!t || !e.current)
       return;
-    const n = document.createRange().createContextualFragment(e);
-    t.current.append(n);
-  }, []), /* @__PURE__ */ r.createElement("div", { style: { display: "contents" }, ref: t });
-}, j = (e) => {
+    const n = document.createRange().createContextualFragment(t);
+    e.current.append(n);
+  }, []), /* @__PURE__ */ r.createElement("div", { style: { display: "contents" }, ref: e });
+}, S = (t) => {
   const {
-    fetchData: t,
+    fetchData: e,
     params: n,
     initialData: a,
     persistDataDuringLoading: s = !1,
-    renderLoading: c = () => null,
-    renderSuccess: l,
+    renderLoading: l = () => null,
+    renderSuccess: c,
     renderError: u = () => null
-  } = e, [h, o] = m("idle"), [v, d] = m(a), [A, E] = m(null), g = f(
-    e.initialData !== void 0
-  ), D = f(s);
-  return D.current = s, y(() => {
-    if (g.current) {
-      g.current = !1;
+  } = t, [h, i] = d("idle"), [o, g] = d(a), [F, v] = d(null), D = f(
+    t.initialData !== void 0
+  ), p = f(s);
+  switch (p.current = s, E(() => {
+    if (D.current) {
+      D.current = !1;
       return;
     }
     (async () => {
-      o("loading"), D.current || d(void 0);
+      i("loading"), p.current || g(void 0);
       try {
-        const i = await t(n);
-        d(i), o("success");
-      } catch (i) {
-        E(i), o("error");
+        const m = await e(n);
+        g(m), i("success");
+      } catch (m) {
+        v(m), i("error");
       }
     })();
-  }, [n, t]), null;
-}, w = (e) => {
-  const { items: t, renderItem: n, renderEmpty: a } = e;
-  if ("data" in t && "meta" in t) {
-    const { data: s, meta: c } = t;
+  }, [n, e]), h) {
+    case "idle":
+    case "loading":
+      return t.persistDataDuringLoading && o ? c(o, !0) : l();
+    case "success":
+      return c(o, !1);
+    case "error":
+      return u(F);
+    default:
+      return null;
+  }
+}, j = (t) => {
+  const { items: e, renderItem: n, renderEmpty: a } = t;
+  if ("data" in e && "meta" in e) {
+    const { data: s, meta: l } = e;
     return s.length === 0 ? a ? a() : null : /* @__PURE__ */ r.createElement(r.Fragment, null, s.map(
-      (l, u) => n(typeof l == "object" ? { ...l, teleportMeta: c } : l, u)
+      (c, u) => n(typeof c == "object" ? { ...c, teleportMeta: l } : c, u)
     ));
   }
-  return Array.isArray(t) ? t.length === 0 ? a ? a() : null : /* @__PURE__ */ r.createElement(r.Fragment, null, t.map((s, c) => n(s, c))) : null;
-}, F = ({ src: e, description: t }) => /* @__PURE__ */ r.createElement(r.Fragment, null, e && /* @__PURE__ */ r.createElement(
+  return Array.isArray(e) ? e.length === 0 ? a ? a() : null : /* @__PURE__ */ r.createElement(r.Fragment, null, e.map((s, l) => n(s, l))) : null;
+}, L = ({ src: t, description: e }) => /* @__PURE__ */ r.createElement(r.Fragment, null, t && /* @__PURE__ */ r.createElement(
   "img",
   {
     loading: "lazy",
-    src: e,
-    alt: t ?? ""
+    src: t,
+    alt: e ?? ""
   }
-)), x = ({ node: e, children: t }) => e.attrs.src ? /* @__PURE__ */ r.createElement(F, { ...e.attrs }) : /* @__PURE__ */ r.createElement(r.Fragment, null, t);
+)), x = ({ node: t, children: e }) => t.attrs.src ? /* @__PURE__ */ r.createElement(L, { ...t.attrs }) : /* @__PURE__ */ r.createElement(r.Fragment, null, e);
 export {
   x as CaisyDocumentLink,
-  S as DangerousHTML,
-  j as DataProvider,
-  H as DateTimePrimitive,
-  w as Repeater
+  H as DangerousHTML,
+  S as DataProvider,
+  w as DateTimePrimitive,
+  j as Repeater
 };
