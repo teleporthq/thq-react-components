@@ -16,12 +16,17 @@ const Repeater = <T extends unknown, K extends Record<string, unknown>>(
   props: RepeaterMetaProps<T, K> | RepeaterBasic<T>
 ) => {
   const { items, renderItem, renderEmpty } = props;
-
   if ("data" in items && "meta" in items) {
     const { data, meta } = items;
+
+    if (Array.isArray(data) === false) {
+      return null
+    }
+
     if (data.length === 0) {
       return renderEmpty ? renderEmpty() : null;
     }
+
     return (
       <>
         {data.map((item, index) =>
