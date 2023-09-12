@@ -1,74 +1,88 @@
-import p from "dayjs";
-import r, { useRef as d, useEffect as E, useState as f } from "react";
-const w = ({ date: t, format: e }) => {
-  const n = p.unix(new Date(t).getTime() / 1e3), a = p(n).format(e);
-  return /* @__PURE__ */ r.createElement(r.Fragment, null, a);
-}, H = ({ html: t }) => {
-  const e = d(null);
-  return E(() => {
-    if (!t || !e.current)
+import E from "dayjs";
+import a, { useRef as f, useEffect as T, useState as d } from "react";
+const M = ({ date: e, format: t }) => {
+  const r = E.unix(new Date(e).getTime() / 1e3), s = E(r).format(t);
+  return /* @__PURE__ */ a.createElement(a.Fragment, null, s);
+}, S = ({ html: e }) => {
+  const t = f(null);
+  return T(() => {
+    if (!e || !t.current)
       return;
-    const n = document.createRange().createContextualFragment(t);
-    e.current.append(n);
-  }, []), /* @__PURE__ */ r.createElement("div", { style: { display: "contents" }, ref: e });
-}, S = (t) => {
+    const r = document.createRange().createContextualFragment(e);
+    t.current.append(r);
+  }, []), /* @__PURE__ */ a.createElement("div", { style: { display: "contents" }, ref: t });
+}, x = (e) => {
   const {
-    fetchData: e,
-    params: n,
-    initialData: a,
-    persistDataDuringLoading: s = !1,
-    renderLoading: l = () => null,
+    fetchData: t,
+    params: r,
+    initialData: s,
+    persistDataDuringLoading: n = !1,
+    renderLoading: u = () => null,
     renderSuccess: c,
-    renderError: u = () => null
-  } = t, [h, i] = f("idle"), [o, g] = f(a), [A, F] = f(null), D = d(
-    t.initialData !== void 0
-  ), y = d(s);
-  switch (y.current = s, E(() => {
-    if (D.current) {
-      D.current = !1;
+    renderError: l = () => null
+  } = e, [D, o] = d("idle"), [i, y] = d(s), [h, F] = d(null), p = f(
+    e.initialData !== void 0
+  ), g = f(n);
+  switch (g.current = n, T(() => {
+    if (p.current) {
+      p.current = !1;
       return;
     }
     (async () => {
-      i("loading"), y.current || g(void 0);
+      o("loading"), g.current || y(void 0);
       try {
-        const m = await e(n);
-        g(m), i("success");
+        const m = await t(r);
+        y(m), o("success");
       } catch (m) {
-        F(m), i("error");
+        F(m), o("error");
       }
     })();
-  }, [n, e]), h) {
+  }, [r, t]), D) {
     case "idle":
     case "loading":
-      return t.persistDataDuringLoading && o ? c(o, !0) : l();
+      return e.persistDataDuringLoading && i ? c(i, !0) : u();
     case "success":
-      return c(o, !1);
+      return c(i, !1);
     case "error":
-      return u(A);
+      return l(h);
     default:
       return null;
   }
-}, j = (t) => {
-  const { items: e, renderItem: n, renderEmpty: a } = t;
-  if ("data" in e && "meta" in e) {
-    const { data: s, meta: l } = e;
-    return Array.isArray(s) === !1 ? null : s.length === 0 ? a ? a() : null : /* @__PURE__ */ r.createElement(r.Fragment, null, s.map(
-      (c, u) => n(typeof c == "object" ? { ...c, teleportMeta: l } : c, u)
+}, B = (e) => {
+  const { items: t, renderItem: r, renderEmpty: s } = e;
+  if ("data" in t && "meta" in t) {
+    const { data: n, meta: u } = t;
+    return Array.isArray(n) === !1 ? null : n.length === 0 ? s ? s() : null : /* @__PURE__ */ a.createElement(a.Fragment, null, n.map(
+      (c, l) => r(typeof c == "object" ? { ...c, teleportMeta: u } : c, l)
     ));
   }
-  return Array.isArray(e) ? e.length === 0 ? a ? a() : null : /* @__PURE__ */ r.createElement(r.Fragment, null, e.map((s, l) => n(s, l))) : null;
-}, v = ({ src: t, description: e }) => /* @__PURE__ */ r.createElement(r.Fragment, null, t && /* @__PURE__ */ r.createElement(
+  return Array.isArray(t) ? t.length === 0 ? s ? s() : null : /* @__PURE__ */ a.createElement(a.Fragment, null, t.map((n, u) => r(n, u))) : null;
+}, R = ({ src: e, description: t }) => /* @__PURE__ */ a.createElement(a.Fragment, null, e && /* @__PURE__ */ a.createElement(
   "img",
   {
     loading: "lazy",
-    src: t,
-    alt: e ?? ""
+    src: e,
+    alt: t ?? ""
   }
-)), x = ({ node: t, children: e }) => t.attrs.src ? /* @__PURE__ */ r.createElement(v, { ...t.attrs }) : /* @__PURE__ */ r.createElement(r.Fragment, null, e);
+)), H = ({ node: e, children: t }) => e.attrs.src ? /* @__PURE__ */ a.createElement(R, { ...e.attrs }) : /* @__PURE__ */ a.createElement(a.Fragment, null, t), b = (e, t) => t?.components?.[e.subType] ? [
+  !0,
+  t.components[e.subType]?.(e.attributes)
+] : [!1], A = (e, t) => t.contentTypes?.[e.subType] ? [
+  !0,
+  t.contentTypes[e.subType]?.(e.attributes)
+] : [!1], j = ({ itemData: e, mappingConfiguration: t, renderDefault: r, renderError: s }) => {
+  try {
+    const n = e.type === "component" ? b(e, t) : A(e, t);
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, n[0] ? n[1] ?? null : r ? r(e) : "default case");
+  } catch (n) {
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, s ? s(n) : "error case");
+  }
+};
 export {
-  x as CaisyDocumentLink,
-  H as DangerousHTML,
-  S as DataProvider,
-  w as DateTimePrimitive,
-  j as Repeater
+  j as CMSMixedType,
+  H as CaisyDocumentLink,
+  S as DangerousHTML,
+  x as DataProvider,
+  M as DateTimePrimitive,
+  B as Repeater
 };
