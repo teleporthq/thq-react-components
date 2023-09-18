@@ -83,7 +83,6 @@ describe('CMSMixedType Component', () => {
   it('should render the "default case" text when typeId is not found and no renderDefault is provided', () => {
     render(
       <CMSMixedType
-        // let the error be, we are testing invalid input
         itemData={{ typeId: 'type123', attributes: {} }}
         mappingConfiguration={{
           type567: () => <div>Component Type 567</div>,
@@ -93,5 +92,5 @@ describe('CMSMixedType Component', () => {
 
     expect(screen.getByText('default case')).toBeInTheDocument();
   });
-  
+
 });
