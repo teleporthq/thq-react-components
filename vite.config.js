@@ -8,6 +8,7 @@ export default defineConfig({
     target: 'esnext',
     polyfillDynamicImport: false,
     outDir: 'dist',
+    minify: false,
     lib: {
       fileName: 'react-components',
       entry: 'src/index.tsx',

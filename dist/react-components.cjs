@@ -1,1 +1,134 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const y=require("dayjs"),r=require("react"),R=({date:t,format:e})=>{const a=y.unix(new Date(t).getTime()/1e3),n=y(a).format(e);return r.createElement(r.Fragment,null,n)},F=({html:t})=>{const e=r.useRef(null);return r.useEffect(()=>{if(!t||!e.current)return;const a=document.createRange().createContextualFragment(t);e.current.append(a)},[]),r.createElement("div",{style:{display:"contents"},ref:e})},v=t=>{const{fetchData:e,params:a,initialData:n,persistDataDuringLoading:s=!1,renderLoading:u=()=>null,renderSuccess:c,renderError:l=()=>null}=t,[D,i]=r.useState("idle"),[o,d]=r.useState(n),[E,p]=r.useState(null),f=r.useRef(t.initialData!==void 0),g=r.useRef(s);switch(g.current=s,r.useEffect(()=>{if(f.current){f.current=!1;return}(async()=>{i("loading"),g.current||d(void 0);try{const m=await e(a);d(m),i("success")}catch(m){p(m),i("error")}})()},[a,e]),D){case"idle":case"loading":return t.persistDataDuringLoading&&o?c(o,!0):u();case"success":return c(o,!1);case"error":return l(E);default:return null}},S=t=>{const{items:e,renderItem:a,renderEmpty:n}=t;if("data"in e&&"meta"in e){const{data:s,meta:u}=e;return Array.isArray(s)===!1?null:s.length===0?n?n():null:r.createElement(r.Fragment,null,s.map((c,l)=>a(typeof c=="object"?{...c,teleportMeta:u}:c,l)))}return Array.isArray(e)?e.length===0?n?n():null:r.createElement(r.Fragment,null,e.map((s,u)=>a(s,u))):null},T=({src:t,description:e})=>r.createElement(r.Fragment,null,t&&r.createElement("img",{loading:"lazy",src:t,alt:e??""})),h=({node:t,children:e})=>t.attrs.src?r.createElement(T,{...t.attrs}):r.createElement(r.Fragment,null,e),L=({itemData:t,mappingConfiguration:e,renderDefault:a,renderError:n})=>{try{return e?.[t.typeId]?React.createElement(React.Fragment,null,e[t.typeId]?.(t.attributes)??null):React.createElement(React.Fragment,null,a?a(t):"default case")}catch(s){return React.createElement(React.Fragment,null,n?n(s):"error case")}};exports.CMSMixedType=L;exports.CaisyDocumentLink=h;exports.DangerousHTML=F;exports.DataProvider=v;exports.DateTimePrimitive=R;exports.Repeater=S;
+'use strict';
+
+Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+
+const dayjs = require('dayjs');
+const React = require('react');
+
+const DateTimePrimitive = ({ date, format }) => {
+  const dateTime = dayjs.unix(new Date(date).getTime() / 1e3);
+  const formattedDate = dayjs(dateTime).format(format);
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, formattedDate);
+};
+
+const DangerousHTML = ({ html }) => {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    if (!html || !ref.current) {
+      return;
+    }
+    const slotHtml = document.createRange().createContextualFragment(html);
+    ref.current.append(slotHtml);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "contents" }, ref });
+};
+
+const DataProvider = (props) => {
+  const {
+    fetchData,
+    params,
+    initialData,
+    persistDataDuringLoading = false,
+    renderLoading = () => null,
+    renderSuccess,
+    renderError = () => null
+  } = props;
+  const [status, setStatus] = React.useState("idle");
+  const [data, setData] = React.useState(initialData);
+  const [error, setError] = React.useState(null);
+  const passFetchBecauseWeHaveInitialData = React.useRef(
+    props.initialData !== void 0
+  );
+  const persistDataDuringLoadingRef = React.useRef(persistDataDuringLoading);
+  persistDataDuringLoadingRef.current = persistDataDuringLoading;
+  React.useEffect(() => {
+    if (passFetchBecauseWeHaveInitialData.current) {
+      passFetchBecauseWeHaveInitialData.current = false;
+      return;
+    }
+    const fetchDataAsync = async () => {
+      setStatus("loading");
+      if (!persistDataDuringLoadingRef.current) {
+        setData(void 0);
+      }
+      try {
+        const result = await fetchData(params);
+        setData(result);
+        setStatus("success");
+      } catch (err) {
+        setError(err);
+        setStatus("error");
+      }
+    };
+    fetchDataAsync();
+  }, [params, fetchData]);
+  switch (status) {
+    case "idle":
+    case "loading":
+      return props.persistDataDuringLoading && data ? renderSuccess(data, true) : renderLoading();
+    case "success":
+      return renderSuccess(data, false);
+    case "error":
+      return renderError(error);
+    default:
+      return null;
+  }
+};
+
+const Repeater = (props) => {
+  const { items, renderItem, renderEmpty } = props;
+  if ("data" in items && "meta" in items) {
+    const { data, meta } = items;
+    if (Array.isArray(data) === false) {
+      return null;
+    }
+    if (data.length === 0) {
+      return renderEmpty ? renderEmpty() : null;
+    }
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, data.map(
+      (item, index) => typeof item === "object" ? renderItem({ ...item, teleportMeta: meta }, index) : renderItem(item, index)
+    ));
+  }
+  if (!Array.isArray(items)) {
+    return null;
+  }
+  if (items.length === 0) {
+    return renderEmpty ? renderEmpty() : null;
+  }
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, items.map((item, index) => renderItem(item, index)));
+};
+
+const Asset = ({ src, description }) => {
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, src && /* @__PURE__ */ React.createElement(
+    "img",
+    {
+      loading: "lazy",
+      src,
+      alt: description ?? ""
+    }
+  ));
+};
+const CaisyDocumentLink = ({ node, children }) => {
+  if (node.attrs.src) {
+    return /* @__PURE__ */ React.createElement(Asset, { ...node.attrs });
+  }
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, children);
+};
+
+const CMSMixedType = ({ itemData, mappingConfiguration, renderDefault, renderError }) => {
+  try {
+    if (mappingConfiguration?.[itemData.typeId]) {
+      return /* @__PURE__ */ React.createElement(React.Fragment, null, mappingConfiguration[itemData.typeId]?.(itemData.attributes) ?? null);
+    }
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, renderDefault ? renderDefault(itemData) : "default case");
+  } catch (err) {
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, renderError ? renderError(err) : "error case");
+  }
+};
+
+exports.CMSMixedType = CMSMixedType;
+exports.CaisyDocumentLink = CaisyDocumentLink;
+exports.DangerousHTML = DangerousHTML;
+exports.DataProvider = DataProvider;
+exports.DateTimePrimitive = DateTimePrimitive;
+exports.Repeater = Repeater;

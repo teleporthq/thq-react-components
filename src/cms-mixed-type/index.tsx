@@ -1,4 +1,6 @@
-// These are permisive props, 
+import React from 'react'
+
+// These are permisive props,
 // we wont enforce type safety on
 // props for each case
 type ItemDataType = Record<string, unknown> & {typeId: string, attributes?: Record<string, unknown>};

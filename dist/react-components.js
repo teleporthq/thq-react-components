@@ -1,81 +1,125 @@
-import p from "dayjs";
-import n, { useRef as f, useEffect as E, useState as d } from "react";
-const I = ({ date: t, format: e }) => {
-  const r = p.unix(new Date(t).getTime() / 1e3), a = p(r).format(e);
-  return /* @__PURE__ */ n.createElement(n.Fragment, null, a);
-}, M = ({ html: t }) => {
-  const e = f(null);
-  return E(() => {
-    if (!t || !e.current)
-      return;
-    const r = document.createRange().createContextualFragment(t);
-    e.current.append(r);
-  }, []), /* @__PURE__ */ n.createElement("div", { style: { display: "contents" }, ref: e });
-}, S = (t) => {
-  const {
-    fetchData: e,
-    params: r,
-    initialData: a,
-    persistDataDuringLoading: c = !1,
-    renderLoading: l = () => null,
-    renderSuccess: s,
-    renderError: u = () => null
-  } = t, [R, i] = d("idle"), [o, g] = d(a), [F, h] = d(null), y = f(
-    t.initialData !== void 0
-  ), D = f(c);
-  switch (D.current = c, E(() => {
-    if (y.current) {
-      y.current = !1;
+import dayjs from 'dayjs';
+import React, { useRef, useEffect, useState } from 'react';
+
+const DateTimePrimitive = ({ date, format }) => {
+  const dateTime = dayjs.unix(new Date(date).getTime() / 1e3);
+  const formattedDate = dayjs(dateTime).format(format);
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, formattedDate);
+};
+
+const DangerousHTML = ({ html }) => {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!html || !ref.current) {
       return;
     }
-    (async () => {
-      i("loading"), D.current || g(void 0);
-      try {
-        const m = await e(r);
-        g(m), i("success");
-      } catch (m) {
-        h(m), i("error");
+    const slotHtml = document.createRange().createContextualFragment(html);
+    ref.current.append(slotHtml);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "contents" }, ref });
+};
+
+const DataProvider = (props) => {
+  const {
+    fetchData,
+    params,
+    initialData,
+    persistDataDuringLoading = false,
+    renderLoading = () => null,
+    renderSuccess,
+    renderError = () => null
+  } = props;
+  const [status, setStatus] = useState("idle");
+  const [data, setData] = useState(initialData);
+  const [error, setError] = useState(null);
+  const passFetchBecauseWeHaveInitialData = useRef(
+    props.initialData !== void 0
+  );
+  const persistDataDuringLoadingRef = useRef(persistDataDuringLoading);
+  persistDataDuringLoadingRef.current = persistDataDuringLoading;
+  useEffect(() => {
+    if (passFetchBecauseWeHaveInitialData.current) {
+      passFetchBecauseWeHaveInitialData.current = false;
+      return;
+    }
+    const fetchDataAsync = async () => {
+      setStatus("loading");
+      if (!persistDataDuringLoadingRef.current) {
+        setData(void 0);
       }
-    })();
-  }, [r, e]), R) {
+      try {
+        const result = await fetchData(params);
+        setData(result);
+        setStatus("success");
+      } catch (err) {
+        setError(err);
+        setStatus("error");
+      }
+    };
+    fetchDataAsync();
+  }, [params, fetchData]);
+  switch (status) {
     case "idle":
     case "loading":
-      return t.persistDataDuringLoading && o ? s(o, !0) : l();
+      return props.persistDataDuringLoading && data ? renderSuccess(data, true) : renderLoading();
     case "success":
-      return s(o, !1);
+      return renderSuccess(data, false);
     case "error":
-      return u(F);
+      return renderError(error);
     default:
       return null;
   }
-}, w = (t) => {
-  const { items: e, renderItem: r, renderEmpty: a } = t;
-  if ("data" in e && "meta" in e) {
-    const { data: c, meta: l } = e;
-    return Array.isArray(c) === !1 ? null : c.length === 0 ? a ? a() : null : /* @__PURE__ */ n.createElement(n.Fragment, null, c.map(
-      (s, u) => r(typeof s == "object" ? { ...s, teleportMeta: l } : s, u)
+};
+
+const Repeater = (props) => {
+  const { items, renderItem, renderEmpty } = props;
+  if ("data" in items && "meta" in items) {
+    const { data, meta } = items;
+    if (Array.isArray(data) === false) {
+      return null;
+    }
+    if (data.length === 0) {
+      return renderEmpty ? renderEmpty() : null;
+    }
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, data.map(
+      (item, index) => typeof item === "object" ? renderItem({ ...item, teleportMeta: meta }, index) : renderItem(item, index)
     ));
   }
-  return Array.isArray(e) ? e.length === 0 ? a ? a() : null : /* @__PURE__ */ n.createElement(n.Fragment, null, e.map((c, l) => r(c, l))) : null;
-}, A = ({ src: t, description: e }) => /* @__PURE__ */ n.createElement(n.Fragment, null, t && /* @__PURE__ */ n.createElement(
-  "img",
-  {
-    loading: "lazy",
-    src: t,
-    alt: e ?? ""
+  if (!Array.isArray(items)) {
+    return null;
   }
-)), x = ({ node: t, children: e }) => t.attrs.src ? /* @__PURE__ */ n.createElement(A, { ...t.attrs }) : /* @__PURE__ */ n.createElement(n.Fragment, null, e), H = ({ itemData: t, mappingConfiguration: e, renderDefault: r, renderError: a }) => {
+  if (items.length === 0) {
+    return renderEmpty ? renderEmpty() : null;
+  }
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, items.map((item, index) => renderItem(item, index)));
+};
+
+const Asset = ({ src, description }) => {
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, src && /* @__PURE__ */ React.createElement(
+    "img",
+    {
+      loading: "lazy",
+      src,
+      alt: description ?? ""
+    }
+  ));
+};
+const CaisyDocumentLink = ({ node, children }) => {
+  if (node.attrs.src) {
+    return /* @__PURE__ */ React.createElement(Asset, { ...node.attrs });
+  }
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, children);
+};
+
+const CMSMixedType = ({ itemData, mappingConfiguration, renderDefault, renderError }) => {
   try {
-    return e?.[t.typeId] ? /* @__PURE__ */ React.createElement(React.Fragment, null, e[t.typeId]?.(t.attributes) ?? null) : /* @__PURE__ */ React.createElement(React.Fragment, null, r ? r(t) : "default case");
-  } catch (c) {
-    return /* @__PURE__ */ React.createElement(React.Fragment, null, a ? a(c) : "error case");
+    if (mappingConfiguration?.[itemData.typeId]) {
+      return /* @__PURE__ */ React.createElement(React.Fragment, null, mappingConfiguration[itemData.typeId]?.(itemData.attributes) ?? null);
+    }
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, renderDefault ? renderDefault(itemData) : "default case");
+  } catch (err) {
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, renderError ? renderError(err) : "error case");
   }
 };
-export {
-  H as CMSMixedType,
-  x as CaisyDocumentLink,
-  M as DangerousHTML,
-  S as DataProvider,
-  I as DateTimePrimitive,
-  w as Repeater
-};
+
+export { CMSMixedType, CaisyDocumentLink, DangerousHTML, DataProvider, DateTimePrimitive, Repeater };
