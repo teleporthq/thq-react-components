@@ -118,7 +118,7 @@ const CaisyDocumentLink = ({ node, children }) => {
 const CMSMixedType = ({ itemData, mappingConfiguration, renderDefault, renderError }) => {
   try {
     if (mappingConfiguration?.[itemData.typeId]) {
-      return /* @__PURE__ */ React.createElement(React.Fragment, null, mappingConfiguration[itemData.typeId]?.(itemData.attributes) ?? null);
+      return /* @__PURE__ */ React.createElement(React.Fragment, null, mappingConfiguration[itemData.typeId]?.(itemData.attributes ?? itemData) ?? null);
     }
     return /* @__PURE__ */ React.createElement(React.Fragment, null, renderDefault ? renderDefault(itemData) : "default case");
   } catch (err) {
