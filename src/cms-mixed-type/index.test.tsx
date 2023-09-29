@@ -93,7 +93,7 @@ describe('CMSMixedType Component', () => {
     expect(screen.getByText('default case')).toBeInTheDocument();
   });
 
-  it.only('item data is available in the rendered content ', () => {
+  it.only('item data is available in the rendered content', () => {
     render(
       <CMSMixedType
         itemData={{ typeId: 'type123', someTitle: "This is the rumbalucha" }}
