@@ -18,7 +18,7 @@ export interface CMSMixedTypeProps {
 export const CMSMixedType = ({itemData, mappingConfiguration, renderDefault, renderError}: CMSMixedTypeProps) => {
   try {
       if ( mappingConfiguration?.[itemData.typeId] ) {
-        return <>{mappingConfiguration[itemData.typeId]?.(itemData.attributes) ?? null}</>
+        return <>{mappingConfiguration[itemData.typeId]?.(itemData.attributes ?? itemData) ?? null}</>
       }
       return <>{renderDefault ? renderDefault(itemData) : "default case"}</>
     } catch (err) {
