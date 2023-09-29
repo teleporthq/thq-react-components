@@ -93,4 +93,19 @@ describe('CMSMixedType Component', () => {
     expect(screen.getByText('default case')).toBeInTheDocument();
   });
 
+  it.only('item data is available in the rendered content', () => {
+    render(
+      <CMSMixedType
+        itemData={{ typeId: 'type123', someTitle: "This is the rumbalucha" }}
+        mappingConfiguration={{
+          type123: (itemData) => {
+            return <div>{itemData.someTitle}</div>
+          },
+        }}
+      />
+    );
+
+    expect(screen.getByText('This is the rumbalucha')).toBeInTheDocument();
+  });
+
 });
