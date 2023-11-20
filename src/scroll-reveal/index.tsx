@@ -1,4 +1,4 @@
-export const DEV_COMPONENT_TAG_NAME = 'scroll-reveal'
+const DEV_COMPONENT_TAG_NAME = 'scroll-reveal'
 
 
 class ScrollRevealElement extends HTMLElement {

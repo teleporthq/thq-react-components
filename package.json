@@ -1,6 +1,6 @@
 {
   "name": "@teleporthq/react-components",
-  "version": "1.0.7-alpha-0",
+  "version": "1.0.7-alpha-1",
   "description": "",
   "main": "dist/react-components.js",
   "type": "module",
@@ -8,10 +8,12 @@
     ".": {
       "import": "./dist/react-components.js",
       "require": "./dist/react-components.cjs"
-    }
+    },
+    "./scroll-reveal": "./dist/scroll-reveal.umd.cjs"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && npm run build:scroll-reveal",
+    "build:scroll-reveal": "vite build -c vite.config.scroll-reveal.js",
     "dev": "vite build --watch",
     "test": "vitest run",
     "test:watch": "vitest watch"
