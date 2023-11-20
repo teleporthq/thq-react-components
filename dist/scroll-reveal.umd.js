@@ -1,11 +1,9 @@
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global["scroll-reveal"] = factory());
-})(this, (function () { 'use strict';
-
+(function(global, factory) {
+  typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, global["scroll-reveal"] = factory());
+})(this, function() {
+  "use strict";
   const DEV_COMPONENT_TAG_NAME = "scroll-reveal";
-  const _ScrollRevealElement = class _ScrollRevealElement extends HTMLElement {
+  const _ScrollRevealElement = class _ScrollRevealElement2 extends HTMLElement {
     constructor() {
       super();
       this.intersectionObserver = new IntersectionObserver(
@@ -23,7 +21,7 @@
     }
     static registerSelf() {
       if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
-        window.customElements.define(DEV_COMPONENT_TAG_NAME, _ScrollRevealElement);
+        window.customElements.define(DEV_COMPONENT_TAG_NAME, _ScrollRevealElement2);
       }
     }
     connectedCallback() {
@@ -52,7 +50,5 @@
   _ScrollRevealElement.observedAttributes = ["animation", "duration", "delay", "revealed"];
   let ScrollRevealElement = _ScrollRevealElement;
   ScrollRevealElement.registerSelf();
-
   return ScrollRevealElement;
-
-}));
+});
