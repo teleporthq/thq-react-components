@@ -2,9 +2,14 @@ const DEV_COMPONENT_TAG_NAME = 'scroll-reveal'
 
 
 class ScrollRevealElement extends HTMLElement {
-  static observedAttributes: string[] = ['animation', 'duration', 'delay', 'revealed'];
-
-  private intersectionObserver: IntersectionObserver;
+  static observedAttributes: string[] = [
+    'animation',
+    'duration',
+    'delay',
+    'revealed',
+    'class',
+    'classname',
+  ];
 
   static registerSelf() {
     if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
@@ -12,9 +17,11 @@ class ScrollRevealElement extends HTMLElement {
     }
   }
 
+
+  private intersectionObserver: IntersectionObserver;
+
   constructor() {
     super();
-
     this.intersectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -30,7 +37,6 @@ class ScrollRevealElement extends HTMLElement {
   }
 
   connectedCallback(): void {
-    this.style.display = 'block';
     this.style.animationPlayState = 'paused';
 
     this.intersectionObserver.observe(this);
@@ -40,19 +46,40 @@ class ScrollRevealElement extends HTMLElement {
     this.intersectionObserver.disconnect();
   }
 
-  attributeChangedCallback(name: string): void {
-    if (name === 'animation' || name === 'duration' || name === 'delay') {
-      this.style.animationName = this.getAttribute('animation') || '';
-      this.style.animationDuration = this.getAttribute('duration') || '';
-      this.style.animationDelay = this.getAttribute('delay') || '';
-    }
+  attributeChangedCallback(
+    name: string,
+    oldValue: string | null,
+    newValue: string | null
+  ): void {
+    switch (name) {
+      case 'animation':
+        this.style.animationName = this.getAttribute('animation') || '';
+        break;
 
-    if (name === 'revealed') {
-      if (this.hasAttribute('revealed')) {
-        this.style.animationPlayState = 'running';
-      } else {
-        this.style.animationPlayState = 'paused';
-      }
+      case 'duration':
+        this.style.animationDuration = this.getAttribute(name) || '';
+        break;
+      case 'delay':
+        this.style.animationDelay = this.getAttribute(name) || '';
+        break;
+
+      case 'revealed':
+        this.style.animationPlayState = this.hasAttribute('revealed')
+          ? 'running'
+          : 'paused';
+        break;
+
+      case 'classname':
+        if (oldValue) {
+          this.classList.remove(oldValue);
+        }
+        if (newValue) {
+          this.classList.add(newValue);
+        }
+        break;
+
+      default:
+        break;
     }
   }
 }

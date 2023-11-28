@@ -25,29 +25,45 @@
       }
     }
     connectedCallback() {
-      this.style.display = "block";
       this.style.animationPlayState = "paused";
       this.intersectionObserver.observe(this);
     }
     disconnectedCallback() {
       this.intersectionObserver.disconnect();
     }
-    attributeChangedCallback(name) {
-      if (name === "animation" || name === "duration" || name === "delay") {
-        this.style.animationName = this.getAttribute("animation") || "";
-        this.style.animationDuration = this.getAttribute("duration") || "";
-        this.style.animationDelay = this.getAttribute("delay") || "";
-      }
-      if (name === "revealed") {
-        if (this.hasAttribute("revealed")) {
-          this.style.animationPlayState = "running";
-        } else {
-          this.style.animationPlayState = "paused";
-        }
+    attributeChangedCallback(name, oldValue, newValue) {
+      switch (name) {
+        case "animation":
+          this.style.animationName = this.getAttribute("animation") || "";
+          break;
+        case "duration":
+          this.style.animationDuration = this.getAttribute(name) || "";
+          break;
+        case "delay":
+          this.style.animationDelay = this.getAttribute(name) || "";
+          break;
+        case "revealed":
+          this.style.animationPlayState = this.hasAttribute("revealed") ? "running" : "paused";
+          break;
+        case "classname":
+          if (oldValue) {
+            this.classList.remove(oldValue);
+          }
+          if (newValue) {
+            this.classList.add(newValue);
+          }
+          break;
       }
     }
   };
-  _ScrollRevealElement.observedAttributes = ["animation", "duration", "delay", "revealed"];
+  _ScrollRevealElement.observedAttributes = [
+    "animation",
+    "duration",
+    "delay",
+    "revealed",
+    "class",
+    "classname"
+  ];
   let ScrollRevealElement = _ScrollRevealElement;
   ScrollRevealElement.registerSelf();
   return ScrollRevealElement;
