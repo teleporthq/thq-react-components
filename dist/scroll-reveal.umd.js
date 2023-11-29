@@ -61,7 +61,10 @@
             this.classList.remove(oldValue);
           }
           if (newValue) {
-            this.classList.add(newValue);
+            const classNames = newValue.split(" ");
+            classNames.forEach((className) => {
+              this.classList.add(className);
+            });
           }
           break;
       }
