@@ -2,8 +2,8 @@
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, global["scroll-reveal"] = factory());
 })(this, function() {
   "use strict";
-  const DEV_COMPONENT_TAG_NAME = "scroll-reveal";
-  const _ScrollRevealElement = class _ScrollRevealElement2 extends HTMLElement {
+  const DEV_COMPONENT_TAG_NAME = "reveal-on-scroll";
+  const _RevealOnScrollElement = class _RevealOnScrollElement2 extends HTMLElement {
     constructor() {
       super();
       this.intersectionObserver = new IntersectionObserver(
@@ -21,7 +21,10 @@
     }
     static registerSelf() {
       if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
-        window.customElements.define(DEV_COMPONENT_TAG_NAME, _ScrollRevealElement2);
+        window.customElements.define(
+          DEV_COMPONENT_TAG_NAME,
+          _RevealOnScrollElement2
+        );
       }
     }
     connectedCallback() {
@@ -34,13 +37,21 @@
     attributeChangedCallback(name, oldValue, newValue) {
       switch (name) {
         case "animation":
-          this.style.animationName = this.getAttribute("animation") || "";
+          if (this.getAttribute(name)) {
+            this.style.animationName = this.getAttribute("animation");
+          }
           break;
         case "duration":
-          this.style.animationDuration = this.getAttribute(name) || "";
+          this.style.animationDuration = this.getAttribute(name) || "0s";
           break;
         case "delay":
-          this.style.animationDelay = this.getAttribute(name) || "";
+          this.style.animationDelay = this.getAttribute(name) || "0s";
+          break;
+        case "easing":
+          this.style.animationTimingFunction = this.getAttribute(name) || "ease";
+          break;
+        case "direction":
+          this.style.animationDirection = this.getAttribute(name) || "normal";
           break;
         case "revealed":
           this.style.animationPlayState = this.hasAttribute("revealed") ? "running" : "paused";
@@ -56,15 +67,17 @@
       }
     }
   };
-  _ScrollRevealElement.observedAttributes = [
+  _RevealOnScrollElement.observedAttributes = [
     "animation",
     "duration",
     "delay",
+    "direction",
+    "easing",
     "revealed",
     "class",
     "classname"
   ];
-  let ScrollRevealElement = _ScrollRevealElement;
-  ScrollRevealElement.registerSelf();
-  return ScrollRevealElement;
+  let RevealOnScrollElement = _RevealOnScrollElement;
+  RevealOnScrollElement.registerSelf();
+  return RevealOnScrollElement;
 });

@@ -1,22 +1,25 @@
-const DEV_COMPONENT_TAG_NAME = 'scroll-reveal'
+const DEV_COMPONENT_TAG_NAME = "reveal-on-scroll";
 
-
-class ScrollRevealElement extends HTMLElement {
+class RevealOnScrollElement extends HTMLElement {
   static observedAttributes: string[] = [
-    'animation',
-    'duration',
-    'delay',
-    'revealed',
-    'class',
-    'classname',
+    "animation",
+    "duration",
+    "delay",
+    "direction",
+    "easing",
+    "revealed",
+    "class",
+    "classname",
   ];
 
   static registerSelf() {
     if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
-      window.customElements.define(DEV_COMPONENT_TAG_NAME, ScrollRevealElement)
+      window.customElements.define(
+        DEV_COMPONENT_TAG_NAME,
+        RevealOnScrollElement,
+      );
     }
   }
-
 
   private intersectionObserver: IntersectionObserver;
 
@@ -26,18 +29,18 @@ class ScrollRevealElement extends HTMLElement {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            this.setAttribute('revealed', '');
+            this.setAttribute("revealed", "");
           } else {
-            this.removeAttribute('revealed');
+            this.removeAttribute("revealed");
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
   }
 
   connectedCallback(): void {
-    this.style.animationPlayState = 'paused';
+    this.style.animationPlayState = "paused";
 
     this.intersectionObserver.observe(this);
   }
@@ -49,27 +52,38 @@ class ScrollRevealElement extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string | null,
-    newValue: string | null
+    newValue: string | null,
   ): void {
     switch (name) {
-      case 'animation':
-        this.style.animationName = this.getAttribute('animation') || '';
+      case "animation":
+        if (this.getAttribute(name)) {
+          this.style.animationName = this.getAttribute("animation");
+        }
         break;
 
-      case 'duration':
-        this.style.animationDuration = this.getAttribute(name) || '';
-        break;
-      case 'delay':
-        this.style.animationDelay = this.getAttribute(name) || '';
+      case "duration":
+        this.style.animationDuration = this.getAttribute(name) || "0s";
         break;
 
-      case 'revealed':
-        this.style.animationPlayState = this.hasAttribute('revealed')
-          ? 'running'
-          : 'paused';
+      case "delay":
+        this.style.animationDelay = this.getAttribute(name) || "0s";
         break;
 
-      case 'classname':
+      case "easing":
+        this.style.animationTimingFunction = this.getAttribute(name) || "ease";
+        break;
+
+      case "direction":
+        this.style.animationDirection = this.getAttribute(name) || "normal";
+        break;
+
+      case "revealed":
+        this.style.animationPlayState = this.hasAttribute("revealed")
+          ? "running"
+          : "paused";
+        break;
+
+      case "classname":
         if (oldValue) {
           this.classList.remove(oldValue);
         }
@@ -84,5 +98,5 @@ class ScrollRevealElement extends HTMLElement {
   }
 }
 
-ScrollRevealElement.registerSelf()
-export default ScrollRevealElement
+RevealOnScrollElement.registerSelf();
+export default RevealOnScrollElement;
