@@ -8,10 +8,10 @@ export default defineConfig({
       /* Vite switched to esm by default and generating `cjs` for build names.
       cjs doesn't work in browser because while parsing they are considering as node env.*/
       fileName: (format) => {
-        return `scroll-reveal.${format}.js`
+        return `animate-on-scroll.${format}.js`
       },
       name: 'scroll-reveal',
-      entry: 'src/scroll-reveal/index.tsx',
+      entry: 'src/animate-on-scroll/index.tsx',
       formats: ['umd'],
     },
     rollupOptions: {

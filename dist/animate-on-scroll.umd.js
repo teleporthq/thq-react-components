@@ -3,7 +3,7 @@
 })(this, function() {
   "use strict";
   const DEV_COMPONENT_TAG_NAME = "reveal-on-scroll";
-  const _RevealOnScrollElement = class _RevealOnScrollElement2 extends HTMLElement {
+  const _AnimateOnScrollElement = class _AnimateOnScrollElement2 extends HTMLElement {
     constructor() {
       super();
       this.intersectionObserver = new IntersectionObserver(
@@ -23,7 +23,7 @@
       if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
         window.customElements.define(
           DEV_COMPONENT_TAG_NAME,
-          _RevealOnScrollElement2
+          _AnimateOnScrollElement2
         );
       }
     }
@@ -70,7 +70,7 @@
       }
     }
   };
-  _RevealOnScrollElement.observedAttributes = [
+  _AnimateOnScrollElement.observedAttributes = [
     "animation",
     "duration",
     "delay",
@@ -80,7 +80,7 @@
     "class",
     "classname"
   ];
-  let RevealOnScrollElement = _RevealOnScrollElement;
-  RevealOnScrollElement.registerSelf();
-  return RevealOnScrollElement;
+  let AnimateOnScrollElement = _AnimateOnScrollElement;
+  AnimateOnScrollElement.registerSelf();
+  return AnimateOnScrollElement;
 });

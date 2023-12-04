@@ -127,7 +127,7 @@ const CMSMixedType = ({ itemData, mappingConfiguration, renderDefault, renderErr
 };
 
 const DEV_COMPONENT_TAG_NAME = "reveal-on-scroll";
-const _RevealOnScrollElement = class _RevealOnScrollElement extends HTMLElement {
+const _AnimateOnScrollElement = class _AnimateOnScrollElement extends HTMLElement {
   constructor() {
     super();
     this.intersectionObserver = new IntersectionObserver(
@@ -147,7 +147,7 @@ const _RevealOnScrollElement = class _RevealOnScrollElement extends HTMLElement 
     if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
       window.customElements.define(
         DEV_COMPONENT_TAG_NAME,
-        _RevealOnScrollElement
+        _AnimateOnScrollElement
       );
     }
   }
@@ -194,7 +194,7 @@ const _RevealOnScrollElement = class _RevealOnScrollElement extends HTMLElement 
     }
   }
 };
-_RevealOnScrollElement.observedAttributes = [
+_AnimateOnScrollElement.observedAttributes = [
   "animation",
   "duration",
   "delay",
@@ -204,13 +204,13 @@ _RevealOnScrollElement.observedAttributes = [
   "class",
   "classname"
 ];
-let RevealOnScrollElement = _RevealOnScrollElement;
-RevealOnScrollElement.registerSelf();
+let AnimateOnScrollElement = _AnimateOnScrollElement;
+AnimateOnScrollElement.registerSelf();
 
+exports.AnimateOnScroll = AnimateOnScrollElement;
 exports.CMSMixedType = CMSMixedType;
 exports.CaisyDocumentLink = CaisyDocumentLink;
 exports.DangerousHTML = DangerousHTML;
 exports.DataProvider = DataProvider;
 exports.DateTimePrimitive = DateTimePrimitive;
 exports.Repeater = Repeater;
-exports.ScrollReveal = RevealOnScrollElement;
