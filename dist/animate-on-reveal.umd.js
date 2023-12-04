@@ -2,8 +2,8 @@
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, global["scroll-reveal"] = factory());
 })(this, function() {
   "use strict";
-  const DEV_COMPONENT_TAG_NAME = "reveal-on-scroll";
-  const _AnimateOnScrollElement = class _AnimateOnScrollElement2 extends HTMLElement {
+  const DEV_COMPONENT_TAG_NAME = "animate-on-reveal";
+  const _AnimateOnElementReveal = class _AnimateOnElementReveal2 extends HTMLElement {
     constructor() {
       super();
       this.intersectionObserver = new IntersectionObserver(
@@ -23,7 +23,7 @@
       if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
         window.customElements.define(
           DEV_COMPONENT_TAG_NAME,
-          _AnimateOnScrollElement2
+          _AnimateOnElementReveal2
         );
       }
     }
@@ -70,7 +70,7 @@
       }
     }
   };
-  _AnimateOnScrollElement.observedAttributes = [
+  _AnimateOnElementReveal.observedAttributes = [
     "animation",
     "duration",
     "delay",
@@ -80,7 +80,7 @@
     "class",
     "classname"
   ];
-  let AnimateOnScrollElement = _AnimateOnScrollElement;
-  AnimateOnScrollElement.registerSelf();
-  return AnimateOnScrollElement;
+  let AnimateOnElementReveal = _AnimateOnElementReveal;
+  AnimateOnElementReveal.registerSelf();
+  return AnimateOnElementReveal;
 });

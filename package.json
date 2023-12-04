@@ -1,6 +1,6 @@
 {
   "name": "@teleporthq/react-components",
-  "version": "1.0.7-alpha-6",
+  "version": "1.0.7-alpha-7",
   "description": "",
   "main": "dist/react-components.js",
   "type": "module",
@@ -9,11 +9,11 @@
       "import": "./dist/react-components.js",
       "require": "./dist/react-components.cjs"
     },
-    "./animate-on-scroll": "./dist/animate-on-scroll.umd.js"
+    "./animate-on-reveal": "./dist/animate-on-reveal.umd.js"
   },
   "scripts": {
-    "build": "vite build && npm run build:animate-on-scroll",
-    "build:animate-on-scroll": "vite build -c vite.config.animate-on-scroll.js",
+    "build": "vite build && npm run build:animate-on-reveal",
+    "build:animate-on-reveal": "vite build -c vite.config.animate-on-reveal.js",
     "dev": "vite build --watch",
     "test": "vitest run",
     "test:watch": "vitest watch"

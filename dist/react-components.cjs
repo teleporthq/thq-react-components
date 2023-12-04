@@ -126,8 +126,8 @@ const CMSMixedType = ({ itemData, mappingConfiguration, renderDefault, renderErr
   }
 };
 
-const DEV_COMPONENT_TAG_NAME = "reveal-on-scroll";
-const _AnimateOnScrollElement = class _AnimateOnScrollElement extends HTMLElement {
+const DEV_COMPONENT_TAG_NAME = "animate-on-reveal";
+const _AnimateOnElementReveal = class _AnimateOnElementReveal extends HTMLElement {
   constructor() {
     super();
     this.intersectionObserver = new IntersectionObserver(
@@ -147,7 +147,7 @@ const _AnimateOnScrollElement = class _AnimateOnScrollElement extends HTMLElemen
     if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
       window.customElements.define(
         DEV_COMPONENT_TAG_NAME,
-        _AnimateOnScrollElement
+        _AnimateOnElementReveal
       );
     }
   }
@@ -194,7 +194,7 @@ const _AnimateOnScrollElement = class _AnimateOnScrollElement extends HTMLElemen
     }
   }
 };
-_AnimateOnScrollElement.observedAttributes = [
+_AnimateOnElementReveal.observedAttributes = [
   "animation",
   "duration",
   "delay",
@@ -204,10 +204,10 @@ _AnimateOnScrollElement.observedAttributes = [
   "class",
   "classname"
 ];
-let AnimateOnScrollElement = _AnimateOnScrollElement;
-AnimateOnScrollElement.registerSelf();
+let AnimateOnElementReveal = _AnimateOnElementReveal;
+AnimateOnElementReveal.registerSelf();
 
-exports.AnimateOnScroll = AnimateOnScrollElement;
+exports.AnimateOnElementReveal = AnimateOnElementReveal;
 exports.CMSMixedType = CMSMixedType;
 exports.CaisyDocumentLink = CaisyDocumentLink;
 exports.DangerousHTML = DangerousHTML;

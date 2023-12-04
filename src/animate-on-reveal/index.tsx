@@ -1,6 +1,6 @@
-const DEV_COMPONENT_TAG_NAME = "reveal-on-scroll";
+const DEV_COMPONENT_TAG_NAME = "animate-on-reveal";
 
-class AnimateOnScrollElement extends HTMLElement {
+class AnimateOnElementReveal extends HTMLElement {
   static observedAttributes: string[] = [
     "animation",
     "duration",
@@ -16,7 +16,7 @@ class AnimateOnScrollElement extends HTMLElement {
     if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
       window.customElements.define(
         DEV_COMPONENT_TAG_NAME,
-        AnimateOnScrollElement,
+        AnimateOnElementReveal,
       );
     }
   }
@@ -102,5 +102,5 @@ class AnimateOnScrollElement extends HTMLElement {
   }
 }
 
-AnimateOnScrollElement.registerSelf();
-export default AnimateOnScrollElement;
+AnimateOnElementReveal.registerSelf();
+export default AnimateOnElementReveal;
