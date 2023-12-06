@@ -10,6 +10,7 @@ class AnimateOnElementReveal extends HTMLElement {
     "revealed",
     "class",
     "classname",
+    "iteration"
   ];
 
   static registerSelf() {
@@ -71,6 +72,10 @@ class AnimateOnElementReveal extends HTMLElement {
 
       case "easing":
         this.style.animationTimingFunction = this.getAttribute(name) || "ease";
+        break;
+
+      case "iteration":
+        this.style.animationIterationCount = this.getAttribute(name) || "1";
         break;
 
       case "direction":

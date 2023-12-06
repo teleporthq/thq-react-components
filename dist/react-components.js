@@ -170,6 +170,9 @@ const _AnimateOnElementReveal = class _AnimateOnElementReveal extends HTMLElemen
       case "easing":
         this.style.animationTimingFunction = this.getAttribute(name) || "ease";
         break;
+      case "iteration":
+        this.style.animationIterationCount = this.getAttribute(name) || "1";
+        break;
       case "direction":
         this.style.animationDirection = this.getAttribute(name) || "normal";
         break;
@@ -198,7 +201,8 @@ _AnimateOnElementReveal.observedAttributes = [
   "easing",
   "revealed",
   "class",
-  "classname"
+  "classname",
+  "iteration"
 ];
 let AnimateOnElementReveal = _AnimateOnElementReveal;
 AnimateOnElementReveal.registerSelf();
