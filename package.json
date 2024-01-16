@@ -1,6 +1,6 @@
 {
   "name": "@teleporthq/react-components",
-  "version": "1.0.7-alpha-9",
+  "version": "1.0.7-alpha-10",
   "description": "",
   "main": "dist/react-components.js",
   "type": "module",
@@ -9,7 +9,8 @@
       "import": "./dist/react-components.js",
       "require": "./dist/react-components.cjs"
     },
-    "./animate-on-reveal": "./dist/animate-on-reveal.umd.js"
+    "./animate-on-reveal": "./dist/animate-on-reveal.umd.js",
+    "./style": "./style.css"
   },
   "scripts": {
     "build": "vite build && npm run build:animate-on-reveal",

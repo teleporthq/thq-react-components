@@ -5,6 +5,8 @@ Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 const dayjs = require('dayjs');
 const React = require('react');
 
+const style = '';
+
 const DateTimePrimitive = ({ date, format }) => {
   const dateTime = dayjs.unix(new Date(date).getTime() / 1e3);
   const formattedDate = dayjs(dateTime).format(format);

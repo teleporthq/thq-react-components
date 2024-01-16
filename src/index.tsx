@@ -1,3 +1,4 @@
+import './animate-on-reveal/style.css'
 export { default as DateTimePrimitive } from './date-time'
 export { default as DangerousHTML } from './dangerous-html'
 export { default as DataProvider } from './data-provider'

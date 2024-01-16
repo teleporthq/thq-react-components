@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import React, { useRef, useEffect, useState } from 'react';
 
+const style = '';
+
 const DateTimePrimitive = ({ date, format }) => {
   const dateTime = dayjs.unix(new Date(date).getTime() / 1e3);
   const formattedDate = dayjs(dateTime).format(format);
