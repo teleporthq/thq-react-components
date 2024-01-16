@@ -1,23 +1,23 @@
-const DEV_COMPONENT_TAG_NAME = "animate-on-reveal";
+const DEV_COMPONENT_TAG_NAME = 'animate-on-reveal';
 
 class AnimateOnElementReveal extends HTMLElement {
   static observedAttributes: string[] = [
-    "animation",
-    "duration",
-    "delay",
-    "direction",
-    "easing",
-    "revealed",
-    "class",
-    "classname",
-    "iteration"
+    'animation',
+    'duration',
+    'delay',
+    'direction',
+    'easing',
+    'revealed',
+    'class',
+    'classname',
+    'iteration',
   ];
 
-  static registerSelf() {
+  static registerSelf(): void {
     if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
       window.customElements.define(
         DEV_COMPONENT_TAG_NAME,
-        AnimateOnElementReveal,
+        AnimateOnElementReveal
       );
     }
   }
@@ -27,22 +27,21 @@ class AnimateOnElementReveal extends HTMLElement {
   constructor() {
     super();
     this.intersectionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry: IntersectionObserverEntry) => {
           if (entry.isIntersecting) {
-            this.setAttribute("revealed", "");
+            this.firstChildReveal(true);
           } else {
-            this.removeAttribute("revealed");
+            this.firstChildReveal(false);
           }
         });
       },
-      { threshold: 0.5 },
+      { threshold: 0.5 }
     );
+    this.style.display = "contents";
   }
 
   connectedCallback(): void {
-    this.style.animationPlayState = "paused";
-
     this.intersectionObserver.observe(this);
   }
 
@@ -53,56 +52,54 @@ class AnimateOnElementReveal extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string | null,
-    newValue: string | null,
+    newValue: string | null
   ): void {
+    const firstChild = this.firstElementChild as HTMLElement;
+
     switch (name) {
-      case "animation":
-        if (this.getAttribute(name)) {
-          this.style.animationName = this.getAttribute("animation");
-        }
-        break;
-
-      case "duration":
-        this.style.animationDuration = this.getAttribute(name) || "0s";
-        break;
-
-      case "delay":
-        this.style.animationDelay = this.getAttribute(name) || "0s";
-        break;
-
-      case "easing":
-        this.style.animationTimingFunction = this.getAttribute(name) || "ease";
-        break;
-
-      case "iteration":
-        this.style.animationIterationCount = this.getAttribute(name) || "1";
-        break;
-
-      case "direction":
-        this.style.animationDirection = this.getAttribute(name) || "normal";
-        break;
-
-      case "revealed":
-        this.style.animationPlayState = this.hasAttribute("revealed")
-          ? "running"
-          : "paused";
-        break;
-
-      case "classname":
-        if (oldValue) {
-          this.classList.remove(oldValue);
-        }
+      case 'animation':
         if (newValue) {
-          const classNames = newValue.split(' ');
-
-          classNames.forEach(className => {
-            this.classList.add(className);
-          });
+          firstChild.style.animationName = newValue;
         }
+        break;
+
+      case 'duration':
+        firstChild.style.animationDuration = newValue || '0s';
+        break;
+
+      case 'delay':
+        firstChild.style.animationDelay = newValue || '0s';
+        break;
+
+      case 'easing':
+        firstChild.style.animationTimingFunction = newValue || 'ease';
+        break;
+
+      case 'iteration':
+        firstChild.style.animationIterationCount = newValue || '1';
+        break;
+
+      case 'direction':
+        firstChild.style.animationDirection = newValue || 'normal';
+        break;
+
+      case 'revealed':
+        firstChild.style.animationPlayState = newValue ? 'running' : 'paused';
         break;
 
       default:
         break;
+    }
+  }
+
+  private firstChildReveal(revealed: boolean): void {
+    const firstChild = this.firstElementChild as HTMLElement;
+    if (firstChild) {
+      if (revealed) {
+        firstChild.setAttribute('revealed', '');
+      } else {
+        firstChild.removeAttribute('revealed');
+      }
     }
   }
 }

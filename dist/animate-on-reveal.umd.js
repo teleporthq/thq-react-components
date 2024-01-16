@@ -10,14 +10,15 @@
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              this.setAttribute("revealed", "");
+              this.firstChildReveal(true);
             } else {
-              this.removeAttribute("revealed");
+              this.firstChildReveal(false);
             }
           });
         },
         { threshold: 0.5 }
       );
+      this.style.display = "contents";
     }
     static registerSelf() {
       if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
@@ -28,48 +29,47 @@
       }
     }
     connectedCallback() {
-      this.style.animationPlayState = "paused";
       this.intersectionObserver.observe(this);
     }
     disconnectedCallback() {
       this.intersectionObserver.disconnect();
     }
     attributeChangedCallback(name, oldValue, newValue) {
+      const firstChild = this.firstElementChild;
       switch (name) {
         case "animation":
-          if (this.getAttribute(name)) {
-            this.style.animationName = this.getAttribute("animation");
+          if (newValue) {
+            firstChild.style.animationName = newValue;
           }
           break;
         case "duration":
-          this.style.animationDuration = this.getAttribute(name) || "0s";
+          firstChild.style.animationDuration = newValue || "0s";
           break;
         case "delay":
-          this.style.animationDelay = this.getAttribute(name) || "0s";
+          firstChild.style.animationDelay = newValue || "0s";
           break;
         case "easing":
-          this.style.animationTimingFunction = this.getAttribute(name) || "ease";
+          firstChild.style.animationTimingFunction = newValue || "ease";
           break;
         case "iteration":
-          this.style.animationIterationCount = this.getAttribute(name) || "1";
+          firstChild.style.animationIterationCount = newValue || "1";
           break;
         case "direction":
-          this.style.animationDirection = this.getAttribute(name) || "normal";
+          firstChild.style.animationDirection = newValue || "normal";
           break;
         case "revealed":
-          this.style.animationPlayState = this.hasAttribute("revealed") ? "running" : "paused";
+          firstChild.style.animationPlayState = newValue ? "running" : "paused";
           break;
-        case "classname":
-          if (oldValue) {
-            this.classList.remove(oldValue);
-          }
-          if (newValue) {
-            const classNames = newValue.split(" ");
-            classNames.forEach((className) => {
-              this.classList.add(className);
-            });
-          }
-          break;
+      }
+    }
+    firstChildReveal(revealed) {
+      const firstChild = this.firstElementChild;
+      if (firstChild) {
+        if (revealed) {
+          firstChild.setAttribute("revealed", "");
+        } else {
+          firstChild.removeAttribute("revealed");
+        }
       }
     }
   };
