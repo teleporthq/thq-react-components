@@ -1,5 +1,4 @@
-const DEV_COMPONENT_TAG_NAME = 'animate-on-reveal';
-
+const DEV_COMPONENT_TAG_NAME = "animate-on-reveal";
 class AnimateOnElementReveal extends HTMLElement {
   static observedAttributes: string[] = [
     'animation',
@@ -13,11 +12,11 @@ class AnimateOnElementReveal extends HTMLElement {
     'iteration',
   ];
 
-  static registerSelf(): void {
+  static registerSelf() {
     if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
       window.customElements.define(
         DEV_COMPONENT_TAG_NAME,
-        AnimateOnElementReveal
+        AnimateOnElementReveal,
       );
     }
   }
@@ -27,79 +26,65 @@ class AnimateOnElementReveal extends HTMLElement {
   constructor() {
     super();
     this.intersectionObserver = new IntersectionObserver(
-      (entries: IntersectionObserverEntry[]) => {
-        entries.forEach((entry: IntersectionObserverEntry) => {
+      (entries) => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            this.firstChildReveal(true);
+            this.setAttribute("revealed", "");
           } else {
-            this.firstChildReveal(false);
+            this.removeAttribute("revealed");
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
     this.style.display = "contents";
   }
 
-  connectedCallback(): void {
-    this.intersectionObserver.observe(this);
+  connectedCallback() {
+    const firstChild = this.firstElementChild as HTMLElement;
+    if (firstChild) {
+      firstChild.style.animationPlayState = "paused";
+    }
+    this.intersectionObserver.observe(this.firstElementChild);
   }
 
-  disconnectedCallback(): void {
+  disconnectedCallback() {
     this.intersectionObserver.disconnect();
   }
 
-  attributeChangedCallback(
-    name: string,
-    oldValue: string | null,
-    newValue: string | null
-  ): void {
+  attributeChangedCallback(name) {
     const firstChild = this.firstElementChild as HTMLElement;
-
     switch (name) {
-      case 'animation':
-        if (newValue) {
-          firstChild.style.animationName = newValue;
+      case "animation":
+        if (this.getAttribute(name)) {
+          firstChild.style.animationName = this.getAttribute("animation");
         }
         break;
-
-      case 'duration':
-        firstChild.style.animationDuration = newValue || '0s';
+      case "duration":
+        firstChild.style.animationDuration = this.getAttribute(name) || "0s";
         break;
-
-      case 'delay':
-        firstChild.style.animationDelay = newValue || '0s';
+      case "delay":
+        firstChild.style.animationDelay = this.getAttribute(name) || "0s";
         break;
-
-      case 'easing':
-        firstChild.style.animationTimingFunction = newValue || 'ease';
+      case "easing":
+        firstChild.style.animationTimingFunction =
+          this.getAttribute(name) || "ease";
         break;
-
-      case 'iteration':
-        firstChild.style.animationIterationCount = newValue || '1';
+      case "iteration":
+        firstChild.style.animationIterationCount =
+          this.getAttribute(name) || "1";
         break;
-
-      case 'direction':
-        firstChild.style.animationDirection = newValue || 'normal';
+      case "direction":
+        firstChild.style.animationDirection =
+          this.getAttribute(name) || "normal";
         break;
-
-      case 'revealed':
-        firstChild.style.animationPlayState = newValue ? 'running' : 'paused';
+      case "revealed":
+        firstChild.style.animationPlayState = this.hasAttribute("revealed")
+          ? "running"
+          : "paused";
         break;
-
       default:
         break;
-    }
-  }
-
-  private firstChildReveal(revealed: boolean): void {
-    const firstChild = this.firstElementChild as HTMLElement;
-    if (firstChild) {
-      if (revealed) {
-        firstChild.setAttribute('revealed', '');
-      } else {
-        firstChild.removeAttribute('revealed');
-      }
     }
   }
 }

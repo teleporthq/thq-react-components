@@ -10,9 +10,9 @@
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              this.firstChildReveal(true);
+              this.setAttribute("revealed", "");
             } else {
-              this.firstChildReveal(false);
+              this.removeAttribute("revealed");
             }
           });
         },
@@ -29,47 +29,41 @@
       }
     }
     connectedCallback() {
-      this.intersectionObserver.observe(this);
+      const firstChild = this.firstElementChild;
+      if (firstChild) {
+        firstChild.style.animationPlayState = "paused";
+      }
+      this.intersectionObserver.observe(this.firstElementChild);
     }
     disconnectedCallback() {
       this.intersectionObserver.disconnect();
     }
-    attributeChangedCallback(name, oldValue, newValue) {
+    attributeChangedCallback(name) {
       const firstChild = this.firstElementChild;
       switch (name) {
         case "animation":
-          if (newValue) {
-            firstChild.style.animationName = newValue;
+          if (this.getAttribute(name)) {
+            firstChild.style.animationName = this.getAttribute("animation");
           }
           break;
         case "duration":
-          firstChild.style.animationDuration = newValue || "0s";
+          firstChild.style.animationDuration = this.getAttribute(name) || "0s";
           break;
         case "delay":
-          firstChild.style.animationDelay = newValue || "0s";
+          firstChild.style.animationDelay = this.getAttribute(name) || "0s";
           break;
         case "easing":
-          firstChild.style.animationTimingFunction = newValue || "ease";
+          firstChild.style.animationTimingFunction = this.getAttribute(name) || "ease";
           break;
         case "iteration":
-          firstChild.style.animationIterationCount = newValue || "1";
+          firstChild.style.animationIterationCount = this.getAttribute(name) || "1";
           break;
         case "direction":
-          firstChild.style.animationDirection = newValue || "normal";
+          firstChild.style.animationDirection = this.getAttribute(name) || "normal";
           break;
         case "revealed":
-          firstChild.style.animationPlayState = newValue ? "running" : "paused";
+          firstChild.style.animationPlayState = this.hasAttribute("revealed") ? "running" : "paused";
           break;
-      }
-    }
-    firstChildReveal(revealed) {
-      const firstChild = this.firstElementChild;
-      if (firstChild) {
-        if (revealed) {
-          firstChild.setAttribute("revealed", "");
-        } else {
-          firstChild.removeAttribute("revealed");
-        }
       }
     }
   };
