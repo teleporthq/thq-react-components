@@ -1,23 +1,22 @@
-name: CI
+name: Publish Alpha
 
 on:
   push:
     branches:
-      - "main"
-      - "!alpha/*"
-    tags:
-      - "*"
+      - "alpha/**"
 
 jobs:
   publish:
-    name: Publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup Node
-        uses: actions/setup-node@v2
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v2
         with:
           node-version: "18.x"
+          registry-url: "https://registry.npmjs.org"
       - run: yarn
       - run: yarn run build
       - run: yarn run test
@@ -34,4 +33,4 @@ jobs:
       - name: Publish to npm
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --yes
+        run: npm publish --tag alpha --yes
