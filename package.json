@@ -1,6 +1,6 @@
 {
   "name": "@teleporthq/react-components",
-  "version": "1.0.7-alpha-12",
+  "version": "1.0.8",
   "description": "",
   "main": "dist/react-components.js",
   "type": "module",
