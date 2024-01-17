@@ -132,6 +132,12 @@ const DEV_COMPONENT_TAG_NAME = "animate-on-reveal";
 const _AnimateOnElementReveal = class _AnimateOnElementReveal extends HTMLElement {
   constructor() {
     super();
+    if (!this.firstElementChild) {
+      return;
+    }
+    this.nodeToObserve = this.findObservableNodeFromTree(
+      this.firstElementChild
+    );
     this.intersectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -155,40 +161,53 @@ const _AnimateOnElementReveal = class _AnimateOnElementReveal extends HTMLElemen
     }
   }
   connectedCallback() {
-    const firstChild = this.firstElementChild;
-    if (firstChild) {
-      firstChild.style.animationPlayState = "paused";
+    if (!this.nodeToObserve) {
+      return;
     }
-    this.intersectionObserver.observe(this.firstElementChild);
+    this.nodeToObserve.style.animationPlayState = "paused";
+    this.intersectionObserver.observe(this.nodeToObserve);
   }
   disconnectedCallback() {
     this.intersectionObserver.disconnect();
   }
+  findObservableNodeFromTree(node) {
+    const style = window.getComputedStyle(node);
+    if (style.getPropertyValue("display") !== "contents") {
+      return node;
+    }
+    const children = node.children;
+    for (let i = 0; i < children.length; i++) {
+      const descendant = this.findObservableNodeFromTree(children[i]);
+      if (descendant) {
+        return descendant;
+      }
+    }
+    return null;
+  }
   attributeChangedCallback(name) {
-    const firstChild = this.firstElementChild;
     switch (name) {
       case "animation":
-        if (this.getAttribute(name)) {
-          firstChild.style.animationName = this.getAttribute("animation");
-        }
+        this.nodeToObserve.style.animationName = this.getAttribute("animation") || "";
         break;
       case "duration":
-        firstChild.style.animationDuration = this.getAttribute(name) || "0s";
+        this.nodeToObserve.style.animationDuration = this.getAttribute(name) || "0s";
         break;
       case "delay":
-        firstChild.style.animationDelay = this.getAttribute(name) || "0s";
+        this.nodeToObserve.style.animationDelay = this.getAttribute(name) || "0s";
         break;
       case "easing":
-        firstChild.style.animationTimingFunction = this.getAttribute(name) || "ease";
+        this.nodeToObserve.style.animationTimingFunction = this.getAttribute(name) || "ease";
         break;
       case "iteration":
-        firstChild.style.animationIterationCount = this.getAttribute(name) || "1";
+        this.nodeToObserve.style.animationIterationCount = this.getAttribute(name) || "1";
         break;
       case "direction":
-        firstChild.style.animationDirection = this.getAttribute(name) || "normal";
+        this.nodeToObserve.style.animationDirection = this.getAttribute(name) || "normal";
         break;
       case "revealed":
-        firstChild.style.animationPlayState = this.hasAttribute("revealed") ? "running" : "paused";
+        this.nodeToObserve.style.animationPlayState = this.hasAttribute(
+          "revealed"
+        ) ? "running" : "paused";
         break;
     }
   }

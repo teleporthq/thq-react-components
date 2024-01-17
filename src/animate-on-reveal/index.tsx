@@ -1,15 +1,15 @@
 const DEV_COMPONENT_TAG_NAME = "animate-on-reveal";
 class AnimateOnElementReveal extends HTMLElement {
   static observedAttributes: string[] = [
-    'animation',
-    'duration',
-    'delay',
-    'direction',
-    'easing',
-    'revealed',
-    'class',
-    'classname',
-    'iteration',
+    "animation",
+    "duration",
+    "delay",
+    "direction",
+    "easing",
+    "revealed",
+    "class",
+    "classname",
+    "iteration",
   ];
 
   static registerSelf() {
@@ -22,9 +22,16 @@ class AnimateOnElementReveal extends HTMLElement {
   }
 
   private intersectionObserver: IntersectionObserver;
+  private nodeToObserve: HTMLElement | null;
 
   constructor() {
     super();
+    if (!this.firstElementChild) {
+      return;
+    }
+    this.nodeToObserve = this.findObservableNodeFromTree(
+      this.firstElementChild,
+    );
     this.intersectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -41,45 +48,64 @@ class AnimateOnElementReveal extends HTMLElement {
   }
 
   connectedCallback() {
-    const firstChild = this.firstElementChild as HTMLElement;
-    if (firstChild) {
-      firstChild.style.animationPlayState = "paused";
+    if (!this.nodeToObserve) {
+      return;
     }
-    this.intersectionObserver.observe(this.firstElementChild);
+    this.nodeToObserve.style.animationPlayState = "paused";
+    this.intersectionObserver.observe(this.nodeToObserve);
   }
 
   disconnectedCallback() {
     this.intersectionObserver.disconnect();
   }
 
+  findObservableNodeFromTree(node: Element) {
+    const style = window.getComputedStyle(node);
+    if (style.getPropertyValue("display") !== "contents") {
+      return node;
+    }
+
+    const children = node.children;
+    for (let i = 0; i < children.length; i++) {
+      const descendant = this.findObservableNodeFromTree(children[i]);
+      if (descendant) {
+        return descendant;
+      }
+    }
+
+    return null;
+  }
+
   attributeChangedCallback(name) {
-    const firstChild = this.firstElementChild as HTMLElement;
     switch (name) {
       case "animation":
-        if (this.getAttribute(name)) {
-          firstChild.style.animationName = this.getAttribute("animation");
-        }
+        this.nodeToObserve.style.animationName =
+          this.getAttribute("animation") || "";
         break;
       case "duration":
-        firstChild.style.animationDuration = this.getAttribute(name) || "0s";
+        this.nodeToObserve.style.animationDuration =
+          this.getAttribute(name) || "0s";
         break;
       case "delay":
-        firstChild.style.animationDelay = this.getAttribute(name) || "0s";
+        this.nodeToObserve.style.animationDelay =
+          this.getAttribute(name) || "0s";
         break;
       case "easing":
-        firstChild.style.animationTimingFunction =
+        this.nodeToObserve.style.animationTimingFunction =
           this.getAttribute(name) || "ease";
         break;
       case "iteration":
-        firstChild.style.animationIterationCount =
+        this.nodeToObserve.style.animationIterationCount =
           this.getAttribute(name) || "1";
         break;
       case "direction":
-        firstChild.style.animationDirection =
+        this.nodeToObserve.style.animationDirection =
           this.getAttribute(name) || "normal";
         break;
       case "revealed":
-        firstChild.style.animationPlayState = this.hasAttribute("revealed")
+        this.nodeToObserve.style.animationPlayState = this.hasAttribute(
+          "revealed",
+        )
           ? "running"
           : "paused";
         break;
