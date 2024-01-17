@@ -2,6 +2,7 @@
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, global["scroll-reveal"] = factory());
 })(this, function() {
   "use strict";
+  const style = "";
   const DEV_COMPONENT_TAG_NAME = "animate-on-reveal";
   const _AnimateOnElementReveal = class _AnimateOnElementReveal2 extends HTMLElement {
     constructor() {
@@ -45,8 +46,8 @@
       this.intersectionObserver.disconnect();
     }
     findObservableNodeFromTree(node) {
-      const style = window.getComputedStyle(node);
-      if (style.getPropertyValue("display") !== "contents") {
+      const style2 = window.getComputedStyle(node);
+      if (style2.getPropertyValue("display") !== "contents") {
         return node;
       }
       const children = node.children;
