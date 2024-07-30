@@ -1,6 +1,6 @@
 const style = "";
 const DEV_COMPONENT_TAG_NAME = "animate-on-reveal";
-const _AnimateOnElementReveal = class _AnimateOnElementReveal2 extends HTMLElement {
+const _AnimateOnElementReveal = class extends HTMLElement {
   constructor() {
     super();
     if (!this.firstElementChild) {
@@ -27,7 +27,7 @@ const _AnimateOnElementReveal = class _AnimateOnElementReveal2 extends HTMLEleme
     if (!window.customElements.get(DEV_COMPONENT_TAG_NAME)) {
       window.customElements.define(
         DEV_COMPONENT_TAG_NAME,
-        _AnimateOnElementReveal2
+        _AnimateOnElementReveal
       );
     }
   }
@@ -83,7 +83,8 @@ const _AnimateOnElementReveal = class _AnimateOnElementReveal2 extends HTMLEleme
     }
   }
 };
-_AnimateOnElementReveal.observedAttributes = [
+let AnimateOnElementReveal = _AnimateOnElementReveal;
+AnimateOnElementReveal.observedAttributes = [
   "animation",
   "duration",
   "delay",
@@ -94,7 +95,6 @@ _AnimateOnElementReveal.observedAttributes = [
   "classname",
   "iteration"
 ];
-let AnimateOnElementReveal = _AnimateOnElementReveal;
 AnimateOnElementReveal.registerSelf();
 export {
   AnimateOnElementReveal as default

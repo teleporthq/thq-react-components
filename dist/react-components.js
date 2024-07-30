@@ -116,6 +116,9 @@ const CMSMixedType = ({ itemData, mappingConfiguration, renderDefault, renderErr
     if (mappingConfiguration?.[itemData.typeId]) {
       return /* @__PURE__ */ React.createElement(React.Fragment, null, mappingConfiguration[itemData.typeId]?.(itemData.attributes ?? itemData) ?? null);
     }
+    if (itemData.__component && mappingConfiguration?.[itemData.__component]) {
+      return /* @__PURE__ */ React.createElement(React.Fragment, null, mappingConfiguration[itemData.__component]?.(itemData.attributes ?? itemData) ?? null);
+    }
     return /* @__PURE__ */ React.createElement(React.Fragment, null, renderDefault ? renderDefault(itemData) : "default case");
   } catch (err) {
     return /* @__PURE__ */ React.createElement(React.Fragment, null, renderError ? renderError(err) : "error case");
