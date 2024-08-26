@@ -77,6 +77,9 @@ const DataProvider = (props) => {
 
 const Repeater = (props) => {
   const { items, renderItem, renderEmpty } = props;
+  if (typeof items === "undefined" || items === null) {
+    return renderEmpty ? renderEmpty() : null;
+  }
   if ("data" in items && "meta" in items) {
     const { data, meta } = items;
     if (Array.isArray(data) === false) {
