@@ -16,11 +16,16 @@ const Repeater = <T extends unknown, K extends Record<string, unknown>>(
   props: RepeaterMetaProps<T, K> | RepeaterBasic<T>
 ) => {
   const { items, renderItem, renderEmpty } = props;
+
+  if (typeof items === "undefined" || items === null) {
+    return renderEmpty ? renderEmpty() : null;
+  }
+
   if ("data" in items && "meta" in items) {
     const { data, meta } = items;
 
     if (Array.isArray(data) === false) {
-      return null
+      return null;
     }
 
     if (data.length === 0) {
