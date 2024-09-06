@@ -38,6 +38,9 @@ const DataProvider = (props) => {
   const persistDataDuringLoadingRef = useRef(persistDataDuringLoading);
   persistDataDuringLoadingRef.current = persistDataDuringLoading;
   useEffect(() => {
+    setData(initialData);
+  }, [initialData]);
+  useEffect(() => {
     if (passFetchBecauseWeHaveInitialData.current) {
       passFetchBecauseWeHaveInitialData.current = false;
       return;
